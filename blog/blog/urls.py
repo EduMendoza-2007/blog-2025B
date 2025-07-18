@@ -24,6 +24,7 @@ urlpatterns = [
     path('', IndexView.as_view(), name='home'),
     path('', include('apps.user.urls')),
     path('', include('apps.post.urls')),
+    path("__reload__/", include("django_browser_reload.urls")),
 ]
 
 if settings.DEBUG:

@@ -2,25 +2,27 @@
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title_layout %} {% endblock title_layout %}</title>
-    <link 
-        rel="stylesheet" 
-        href="{% static 'assets/favicon.ico' %}" 
-        type="image/x-icon"
-    />
-     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    {% block extra_head_layout %} {% endblock extra_head_layout %}
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>{% block title_layout %} {% endblock title_layout %}</title>
+      <link 
+          rel="stylesheet" 
+          href="{% static 'assets/favicon.ico' %}" 
+          type="image/x-icon"
+      >
+      <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+      {% block extra_head_layout %} {% endblock extra_head_layout %}
 
-    <style type="text/tailwindcss">
-      @theme {
-        --color-primary: #da373d;
-      }
-    </style>
-</head>
-<body class="bg-primary">
-    {% block content_layout %} {% endblock content_layout %}
-</body>
+      <style>
+        @theme {
+          --color-primary: #1a202c;
+        }
+      </style>
+  </head>
+  <body class="bg-primary">
+      {% block content_layout %} {% endblock content_layout %}
+  </body>
+  {% load django_browser_reload %}
+  {% django_browser_reload_script %}
 </html>

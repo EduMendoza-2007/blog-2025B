@@ -1,7 +1,6 @@
 <nav>
-    <ul>
-        <li><a href="{% url 'home' %}">Inicio</a></li>
-        <li><a href="{% url 'post:post_detail' slug='primero' %}">Post primero</a></li>
-        <li><a href="{% url 'user:user_profile' slug='usuario' %}">Perfil</a></li>
-    </ul>
+  <ul>
+    <li><a href="{% url 'home' %}">Inicio</a></li>
+    <li><a href="{% url 'user:user_profile' %}">Perfil</a></li>
+  </ul>
 </nav>
