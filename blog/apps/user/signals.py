@@ -109,7 +109,8 @@ def created_groups_and_permissions(sender, instance, created, **kwargs):
                 delete_comment_permission
             )
             
-#COMPLETAR ESTO
-
-        except:
-            pass    
+            print("Grupos y permisos creados correctamente.")
+        except ContentType.DoesNotExist:
+            print("El tipo aun no se encuentra disponible.")
+        except Permission.DoesNotExist:
+            print("Uno o mas permisos no existen.")
