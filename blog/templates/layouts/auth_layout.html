@@ -1,1 +1,10 @@
 {% extends 'layouts/base_layout.html' %}
+{% block extra_head_layout %}
+    {% block extra_head %} {% endblock extra_head %}
+{% endblock extra_head_layout %}
+    
+
+{% block content_layout %}
+    <main class="min-h-10 flex justify-center bg-green-200 " flex justify-center></main>
+    {% block content %} e Colocar contenido {% endblock content %}
+{% endblock content_layout %}
