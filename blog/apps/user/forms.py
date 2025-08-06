@@ -1,23 +1,23 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
 from apps.user.models import User
 
 class RegisterForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'email', 'alias', 'avatar')
+        fields = ('username', 'email', 'avatar', 'alias')
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(
         max_length=150, 
         widget=forms.TextInput(
             attrs={'class': 'form-control', 
-                   'placeholder': 'Username'
+                   'placeholder': 'Usuario'
                    }
                 )
             )
     password = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': 'Password'}
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Contraseña'}
         )
     )
