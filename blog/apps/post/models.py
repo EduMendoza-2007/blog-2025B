@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.utils import timezone
 from django.utils.text import slugify
 import uuid
@@ -6,8 +7,9 @@ import os
 
 
 
+
 class Category(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=50)
 
     def __str__(self):
         return self.title
@@ -30,6 +32,10 @@ class Post(models.Model):
     def amount_comments(self):
         return self.comments.count()
     
+    @property
+    def amount_images(self):
+        return self.images.count()
+
     def generate_unique_slug(self):
         slug = slugify(self.title)
         unique_slug = slug
@@ -47,6 +53,9 @@ class Post(models.Model):
 
         super().save(*args, **kwargs)
 
+        if not self.images.exists():
+            PostImage.objects.create(post=self, image='post/default/post_default.png')
+
     
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -57,7 +66,7 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.id
+        return self.content
     
 def get_image_path(instance, filename):
     post_id = instance.post.id
@@ -76,6 +85,7 @@ class PostImage(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to=get_image_path)
     active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f'PostImage {self.id}'

@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 @receiver(post_save, sender=User)
-def created_groups_and_permissions(sender, instance, created, **kwargs):
+def create_groups_and_permissions(sender, instance, created, **kwargs):
     if created and instance.is_superuser:
         try:
             post_content_type = ContentType.objects.get_for_model(Post)
@@ -50,12 +50,10 @@ def created_groups_and_permissions(sender, instance, created, **kwargs):
 
             #Crear grupo de usuarios registrados
             registered_group, created = Group.objects.get_or_create(
-                name='Registereds'
+                name='Registered'
             )
             registered_group.permissions.add(
                 view_post_permission,
-                change_post_permission,
-                delete_post_permission,
 
                 view_comment_permission,
                 add_comment_permission,
@@ -109,7 +107,8 @@ def created_groups_and_permissions(sender, instance, created, **kwargs):
                 delete_comment_permission
             )
             
-#COMPLETAR ESTO
-
-        except:
-            pass    
+            print("Grupos y permisos creados correctamente.")
+        except ContentType.DoesNotExist:
+            print("El tipo aun no se encuentra disponible.")
+        except Permission.DoesNotExist:
+            print("Uno o mas permisos no existen.")
