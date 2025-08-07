@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.utils import timezone
 from django.utils.text import slugify
 import uuid
@@ -8,7 +9,7 @@ import os
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=50)
 
     def __str__(self):
         return self.title
