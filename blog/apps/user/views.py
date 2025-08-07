@@ -32,6 +32,5 @@ class LoginView(LoginViewDjango):
     def get_success_url(self):
         return reverse_lazy('home')
     
-def LogoutView(request):
-    logout(request)
-    return redirect('home')
+class LogoutView(LogoutViewDjango):
+    next_page = 'user:auth_login'
