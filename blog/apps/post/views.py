@@ -2,10 +2,10 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView,
 from django.db.models import Count
 from apps.post.models import Post, PostImage, Comment
 from django.conf import settings
-from apps.post.forms import PostFilterForm, PostCreateForm, CommentForm
+from apps.post.forms import PostFilterForm, PostCreateForm, CommentForm, PostForm
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404
-
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 class PostListView(ListView):
     model = Post
@@ -121,11 +121,26 @@ class PostDetailView(DetailView):
 
 
 
-class PostUpdateView(TemplateView):
-    template_name = 'post/post_detail.html'
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'post/post_update.html'
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+    
+    def get_success_url(self):
+        return reverse_lazy('post:post_detail', kwargs={'slug': self.object.post.slug})
 
 class PostDeleteView(TemplateView):
-    template_name = 'post/post_detail.html'
+    model = Post
+    template_name = 'post/post_delete.html'
+    success_url = reverse_lazy('post:post_list')
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
 
 class CommentCreateView(CreateView):
     model = Commentform_class = CommentForm
@@ -141,7 +156,17 @@ class CommentCreateView(CreateView):
         return reverse_lazy('post:post_detail', kwargs={'slug': self.object.post.slug})
 
 class CommentDeleteView(DeleteView):
-    pass
+    model = CommentForm_class = CommentForm
+    template_name = 'post/post_detail.html'
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
+    
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, 'Commentario eliminado exitosamente.')
+
+        return super().delete(request, *args, **kwargs)
 
 class CommentDetailView(DetailView):
     pass
