@@ -1,11 +1,8 @@
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db.models import Count
-from apps.post.models import Post, PostImage, Comment
-from django.conf import settings
-from apps.post.forms import PostFilterForm, PostCreateForm, CommentForm, PostForm
-from django.urls import reverse, reverse_lazy
-from django.shortcuts import get_object_or_404
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from apps.post.models import Post
+from apps.post.forms import PostFilterForm
+
 
 class PostListView(ListView):
     model = Post
@@ -15,7 +12,7 @@ class PostListView(ListView):
     paginate_by = 1
 
     def get_queryset(self):
-        queryset = Post.objets.all().annotate(comments_count=Count('comments'))
+        queryset = Post.objects.all().annotate(comments_count=Count('comments'))
         search_query = self.request.GET.get('Search_query', '')
         order_by = self.request.GET.get('order_by', '-created_at')
 
@@ -52,124 +49,14 @@ class PostListView(ListView):
 
         return context
 
-
-class PostCreateView(CreateView):
-    model = Post
-    form_class = PostCreateForm
-    template_name = 'post/post_create.html'
-
-    def form_valid(self,form):
-        form.instance.author = self.request.user
-        post = form.save()
-
-        images = self.request.FILES.getlist('images')
-
-        if images:
-            for image in images:
-                PostImage.objects.create(post=post, image=image)
-
-        else:
-            PostImage.objects.create(post=post, image=settings.DEFAULT_POST_IMAGE)
-
-        return super().form_valid(self)
-
-    def get_success_url(self):
-        return reverse('post:post_detail', kwargs={'slug': self.object.slug})
-
-class PostDetailView(DetailView):
-    model = Post
+class PostDetailView(TemplateView):
     template_name = 'post/post_detail.html'
-    context_object_name = 'post'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+class PostCreateView(TemplateView):
+    template_name = 'post/post_detail.html'
 
-        active_images = self.object.images.filter(active=True)
-
-        context['active_images'] = active_images
-        context['add_comment_form'] = CommentForm()
-
-        edit_comment_id = self.request.GET.get('edit_comment')
-        if edit_comment_id:
-            comment = get_object_or_404(Comment, id=edit_comment_id)
-
-            if comment.author == self.request.user:
-                context['editing_comment_id'] = comment.id
-                context['edit_comment_form'] = CommentForm(instance=comment)
-            else:
-                context['editing_comment_id'] = None
-                context['edit_comment_form'] = None
-
-        delete_comment_id = self.request.GET.get('delete_comment')
-        if delete_comment_id:
-            comment = get_object_or_404(Comment, id=delete_comment_id)
-
-            if (comment.author == self.request.user or 
-                (comment.post.author == self.request.user and not
-                comment.author.is_admin and not
-                comment.author.is_superuser) or
-                self.request.user.is_superuser or
-                self.request.user.is_staff or
-                self.request.user.is_admin
-            ):
-                context['deleting_comment_id'] = comment.id
-            else:
-                context['deleting_comment_id'] = None
-
-        return context
-
-
-
-
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Post
-    form_class = PostForm
-    template_name = 'post/post_update.html'
-
-    def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.author
-    
-    def get_success_url(self):
-        return reverse_lazy('post:post_detail', kwargs={'slug': self.object.post.slug})
+class PostUpdateView(TemplateView):
+    template_name = 'post/post_detail.html'
 
 class PostDeleteView(TemplateView):
-    model = Post
-    template_name = 'post/post_delete.html'
-    success_url = reverse_lazy('post:post_list')
-
-    def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.author
-
-class CommentCreateView(CreateView):
-    model = Commentform_class = CommentForm
     template_name = 'post/post_detail.html'
-
-    def form_valid(self,form):
-        form.instance.author = self.request.user
-        form.instance.post = Post.objects.get(slug=self.kwargs['slug'])
-
-        return super().form_valid(form)
-    
-    def get_success_url(self):
-        return reverse_lazy('post:post_detail', kwargs={'slug': self.object.post.slug})
-
-class CommentDeleteView(DeleteView):
-    model = CommentForm_class = CommentForm
-    template_name = 'post/post_detail.html'
-
-    def test_func(self):
-        comment = self.get_object()
-        return self.request.user == comment.author
-    
-    def delete(self, request, *args, **kwargs):
-        messages.success(self.request, 'Commentario eliminado exitosamente.')
-
-        return super().delete(request, *args, **kwargs)
-
-class CommentDetailView(DetailView):
-    pass
-
-class CommentUpdateView(UpdateView):
-    pass
