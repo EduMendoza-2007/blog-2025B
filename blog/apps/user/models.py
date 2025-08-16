@@ -27,3 +27,4 @@ class User(AbstractUser):
     @property
     def is_admin(self):
         return self.groups.filter(name='Admins').exists()
+    

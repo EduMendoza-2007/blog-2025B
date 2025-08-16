@@ -2,14 +2,18 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.utils.text import slugify
+from django.urls import reverse
 import uuid
 import os
 
 
-
-
 class Category(models.Model):
-    title = models.CharField(max_length=50)
+    name = models.CharField(max_length=80, unique=True)
+    slug = models.SlugField(unique=True)
+
+    class Meta:
+        verbose_name_plural = "Categorías"
+        ordering = ["name"]
 
     def __str__(self):
         return self.title

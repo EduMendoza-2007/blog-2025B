@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -21,15 +22,20 @@ from blog.views import IndexView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # Home
     path('', IndexView.as_view(), name='home'),
-    path('', include('apps.user.urls')),
-    path('', include('apps.post.urls')),
-    path("__reload__/", include("django_browser_reload.urls")),
+
+    # Rutas de tu app de posts (si las tenés)
+    path('', include('apps.post.urls')),       # SIN namespace aquí
+
+    # Rutas de usuario en la raíz (login, logout, signup...)
+    path('', include('apps.user.urls')),       # ← DEJÁ ESTA
+    # path('user/', include('apps.user.urls', namespace='user')),  # ← QUITAR esta línea
 ]
 
 if settings.DEBUG:
     from django.conf.urls.static import static
-
+    urlpatterns += [path("__reload__/", include("django_browser_reload.urls"))]
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
