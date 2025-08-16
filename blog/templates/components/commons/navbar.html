@@ -1,0 +1,21 @@
+<nav class="container mx-auto max-w-6xl flex items-center justify-between p-3">
+  <a href="{% url 'home' %}" class="text-lg font-bold tracking-wide">MiBlog</a>
+
+  <form action="{% url 'home' %}" method="get" class="hidden md:flex items-center gap-2">
+    <input name="q" value="{{ request.GET.q }}" placeholder="Buscar..."
+           class="bg-gray-800 rounded-lg px-3 py-1.5 focus:outline-none" />
+    <button class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-semibold">Filtrar</button>
+  </form>
+
+  <div class="flex gap-3">
+    {% if user.is_authenticated %}
+      {% if perms.post.add_post %}
+        <a href="{% url 'post_create' %}" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold">Nuevo artículo</a>
+      {% endif %}
+      <a href="{% url 'logout' %}" class="px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 text-white text-sm font-semibold">Cerrar sesión</a>
+    {% else %}
+      <a href="{% url 'login' %}" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold">Iniciar Sesión</a>
+      <a href="{% url 'register' %}" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold">Registrarte</a>
+    {% endif %}
+  </div>
+</nav>

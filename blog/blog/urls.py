@@ -32,6 +32,7 @@ urlpatterns = [
     # Rutas de usuario en la raíz (login, logout, signup...)
     path('', include('apps.user.urls')),       # ← DEJÁ ESTA
     # path('user/', include('apps.user.urls', namespace='user')),  # ← QUITAR esta línea
+    path("", include("apps.accounts.urls")),  # login/logout/signup y vistas de roles
 ]
 
 if settings.DEBUG:

@@ -8,7 +8,7 @@ import os
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=80, unique=True)
+    name = models.CharField(max_length=100, default="General")  # ← default temporal o permanente
     slug = models.SlugField(unique=True)
 
     class Meta:
