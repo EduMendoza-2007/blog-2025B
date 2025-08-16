@@ -1,114 +1,102 @@
-from django.contrib.auth.models import Permission, Group
+# apps/user/signals.py
+from django.db.models.signals import post_migrate, post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
+
 from apps.post.models import Post, Comment
 from apps.user.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+
+
+def _collect_perms():
+    """
+    Devuelve un diccionario con conjuntos de permisos útiles, ya creados por Django
+    (add/change/delete/view) para Post y Comment.
+    """
+    ct_post = ContentType.objects.get_for_model(Post)
+    ct_comment = ContentType.objects.get_for_model(Comment)
+
+    perms_qs = Permission.objects.filter(content_type__in=[ct_post, ct_comment])
+    perms = {p.codename: p for p in perms_qs}
+
+    def pick(*codes):
+        return [perms[c] for c in codes if c in perms]
+
+    return {
+        "post_all": pick("add_post", "change_post", "delete_post", "view_post"),
+        "post_create_edit_view": pick("add_post", "change_post", "view_post"),
+        "post_view": pick("view_post"),
+        "comment_all": pick("add_comment", "change_comment", "delete_comment", "view_comment"),
+        "comment_create_edit_view": pick("add_comment", "change_comment", "view_comment"),
+        "comment_view": pick("view_comment"),
+    }
+
+
+def _ensure_groups_and_permissions():
+    """
+    Crea/actualiza grupos y asigna permisos de forma idempotente.
+    Mantiene grupos en español y agrega alias en inglés para compatibilidad.
+    """
+    try:
+        sets = _collect_perms()
+    except Exception:
+        # Puede fallar en la primera corrida si aún no existen ContentTypes/Permissions
+        return
+
+    # ---- Grupos en español
+    admins, _ = Group.objects.get_or_create(name="Admins")
+    editores, _ = Group.objects.get_or_create(name="Editores")
+    colaboradores, _ = Group.objects.get_or_create(name="Colaboradores")
+    visitantes, _ = Group.objects.get_or_create(name="Visitantes")
+
+    # ---- Alias/compatibilidad en inglés
+    registered, _ = Group.objects.get_or_create(name="Registered")
+    collaborators_alias, _ = Group.objects.get_or_create(name="Collaborators")
+
+    # Asignación de permisos (puedes ajustar a tu política real)
+    admins.permissions.set(sets["post_all"] + sets["comment_all"])
+
+    # Editores: full sobre Post y Comment (como en tu segundo bloque)
+    editores.permissions.set(sets["post_all"] + sets["comment_all"])
+
+    # Colaboradores: pueden crear/editar/ver Post; y full en Comment (como tu primer bloque)
+    colaboradores.permissions.set(sets["post_create_edit_view"] + sets["comment_all"])
+
+    # Visitantes: ver Post (opcionalmente pueden ver Comment si tu lógica lo requiere)
+    visitantes.permissions.set(sets["post_view"])  # agrega + sets["comment_view"] si quieres
+
+    # Registered (alias práctico de “usuario registrado”):
+    # ver Post + operar en Comment (como en tu primer bloque)
+    registered.permissions.set(sets["post_view"] + sets["comment_all"])
+
+    # Collaborators (alias de Colaboradores)
+    collaborators_alias.permissions.set(sets["post_create_edit_view"] + sets["comment_all"])
+
+
+@receiver(post_migrate)
+def create_default_groups(sender, **kwargs):
+    """
+    Se ejecuta después de `migrate` para garantizar grupos y permisos.
+    """
+    _ensure_groups_and_permissions()
+
 
 @receiver(post_save, sender=User)
-def create_groups_and_permissions(sender, instance, created, **kwargs):
-    if created and instance.is_superuser:
-        try:
-            post_content_type = ContentType.objects.get_for_model(Post)
-            comment_content_type = ContentType.objects.get_for_model(Comment)
-
-            # Permisos de POST  
-            view_post_permission = Permission.objects.get(
-                codename='view_post',
-                content_type=post_content_type
-            )
-            add_post_permission = Permission.objects.get(
-                codename='add_post',
-                content_type=post_content_type
-            )
-            change_post_permission = Permission.objects.get(
-                codename='change_post',
-                content_type=post_content_type
-            )
-            delete_post_permission = Permission.objects.get(
-                codename='delete_post',
-                content_type=post_content_type
-            )
-
-            #Permiso de COMMENT
-            view_comment_permission = Permission.objects.get(
-                codename='view_comment',
-                content_type=comment_content_type
-            )
-            add_comment_permission = Permission.objects.get(
-                codename='add_comment',
-                content_type=comment_content_type
-            )
-            change_comment_permission = Permission.objects.get(
-                codename='change_comment',
-                content_type=comment_content_type
-            )
-            delete_comment_permission = Permission.objects.get(
-                codename='delete_comment',
-                content_type=comment_content_type
-            )
-
-            #Crear grupo de usuarios registrados
-            registered_group, created = Group.objects.get_or_create(
-                name='Registered'
-            )
-            registered_group.permissions.add(
-                view_post_permission,
-
-                view_comment_permission,
-                add_comment_permission,
-                change_comment_permission,
-                delete_comment_permission
-                #Permiso para ver posts
-                #Permiso para crear posts
-                #Permiso para actualizar sus posts
-                #Permiso para borrar sus posts
-                #Permiso para ver comentarios de posts
-                #Permiso para crear comentarios de un post
-                #Permiso para actualizar de su comentario en un post
-                #Permiso para borrar su comentario de un post
-            )
-            
-            #Crear grupo de usuarios colaboradores
-            registered_group, created = Group.objects.get_or_create(
-                name='Collaborators'
-            )
-            registered_group.permissions.add(
-                view_post_permission,
-                add_post_permission,
-                change_post_permission,
-                delete_post_permission,
-                view_comment_permission,
-                add_comment_permission,
-                change_comment_permission,
-                delete_comment_permission,
-                #Permiso para ver posts
-                #Permiso para crear posts
-                #Permiso para actualizar sus posts
-                #Permiso para borrar sus posts
-                #Permiso para ver comentarios de posts
-                #Permiso para ver comentarios del post
-                #Permiso para crear comentarios de un post
-                #Permiso para actualizar de su comentario en un post
-                #Permiso para borrar su comentario de un post
-            )   
-            # #Crear grupos de usuarios administradores
-            admin_group, created = Group.objects.get_or_create(
-                name='Admins'
-            )
-            registered_group.permissions.add(
-                view_post_permission,
-                add_post_permission,
-                change_post_permission,
-                delete_post_permission,
-                view_comment_permission,
-                add_comment_permission,
-                change_comment_permission,
-                delete_comment_permission
-            )
-            
-            print("Grupos y permisos creados correctamente.")
-        except ContentType.DoesNotExist:
-            print("El tipo aun no se encuentra disponible.")
-        except Permission.DoesNotExist:
-            print("Uno o mas permisos no existen.")
+def assign_groups_on_user_create(sender, instance, created, **kwargs):
+    """
+    Al crear usuarios:
+    - Superusuario -> Admins
+    - Usuario normal -> Registered
+    (Si el grupo aún no existe porque no corriste migrate, no rompe.)
+    """
+    if not created:
+        return
+    try:
+        if instance.is_superuser:
+            g = Group.objects.get(name="Admins")
+        else:
+            g = Group.objects.get(name="Registered")
+        instance.groups.add(g)
+    except Group.DoesNotExist:
+        # Si aún no existen los grupos, no interrumpe el alta del usuario
+        pass
