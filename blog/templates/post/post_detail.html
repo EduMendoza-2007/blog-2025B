@@ -1,13 +1,55 @@
-{% extends 'layouts/post_layout.html' %}
+{% extends "layouts/post_layout.html" %}
+{% block title %}{{ post.title }} - Nexus Gaming{% endblock %}
 
+{% block post_main %}
+<article class="bg-gray-800/60 rounded-2xl p-6">
+  <h1 class="text-3xl font-bold">{{ post.title }}</h1>
+  <p class="text-gray-400 text-sm mt-1">
+    Por {{ post.author }} • {{ post.created|date:"d/m/Y H:i" }}
+    {% if post.category %} • <a class="text-emerald-400" href="{% url 'by_category' post.category.slug %}">{{ post.category.name }}</a>{% endif %}
+  </p>
+  <div class="prose prose-invert max-w-none mt-4">{{ post.body|linebreaks }}</div>
 
-{% block title %}
-    Post
-{% endblock title %}
+  {% if post.photos.all %}
+    <div class="grid md:grid-cols-3 gap-3 mt-4">
+      {% for ph in post.photos.all %}
+        <figure class="bg-gray-900/60 rounded-xl p-2">
+          <img src="{{ ph.image.url }}" alt="{{ ph.caption }}" class="rounded-lg w-full">
+          {% if ph.caption %}<figcaption class="text-xs text-gray-400 mt-1">{{ ph.caption }}</figcaption>{% endif %}
+        </figure>
+      {% endfor %}
+    </div>
+  {% endif %}
+</article>
 
+<section class="mt-6 space-y-4">
+  <h2 class="text-xl font-semibold">Comentarios</h2>
 
-{% block content %}
-    Colocar contenido
-{% endblock content %}
-    
-    
+  {% if user.is_authenticated %}
+    <form method="post" action="{% url 'comment_create' post.slug %}" class="bg-gray-800/60 rounded-xl p-4 space-y-3">
+      {% csrf_token %}
+      <textarea name="text" rows="3" class="w-full bg-gray-900 rounded-lg p-3" placeholder="Escribe un comentario..."></textarea>
+      <button class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-semibold">Comentar</button>
+    </form>
+  {% else %}
+    <p class="text-gray-400">Inicia sesión para comentar.</p>
+  {% endif %}
+
+  <div class="space-y-3">
+    {% for c in post.comments.all %}
+      <div class="bg-gray-800/60 rounded-xl p-3">
+        <p class="text-sm text-gray-400">{{ c.author }} • {{ c.created|date:"d/m/Y H:i" }}</p>
+        <p class="mt-1">{{ c.text|linebreaks }}</p>
+        {% if user == c.author or perms.post.delete_comment or perms.post.change_comment %}
+          <div class="text-right mt-2 space-x-2">
+            <a href="{% url 'comment_update' c.pk %}" class="text-emerald-400 text-sm">Editar</a>
+            <a href="{% url 'comment_delete' c.pk %}" class="text-red-400 text-sm">Eliminar</a>
+          </div>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p class="text-gray-400">Sin comentarios aún.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
