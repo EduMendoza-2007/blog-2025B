@@ -73,7 +73,7 @@ TEMPLATES = [
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.getnev('DB_NAME'),
+        "NAME": os.getenv('DB_NAME'),
 
         'USER': os.getenv('DB_USER'), 
                 
