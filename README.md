@@ -1,5 +1,8 @@
 # Proyecto creado con Python y Django
 
+Integrantes:
+Edu Mendoza
+
 # Estructura del proyecto:
 
 '''
