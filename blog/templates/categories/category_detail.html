@@ -1,0 +1,12 @@
+{% extends "layouts/general_layout.html" %}
+{% block title %}{{ category.name }} - Categoría{% endblock %}
+{% block page %}
+<h1 class="text-2xl font-bold mb-4">{{ category.name }}</h1>
+<ul class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+  {% for p in category.posts.all %}
+    <li><a class="block bg-gray-800/60 p-4 rounded-xl hover:ring-2 ring-emerald-400" href="{% url 'post_detail' p.slug %}">{{ p.title }}</a></li>
+  {% empty %}
+    <li class="text-gray-400">Sin artículos.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
