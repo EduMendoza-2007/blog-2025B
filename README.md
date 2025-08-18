@@ -8,15 +8,18 @@ Edu Mendoza
 
 # Admin
 Usuario: Edu
-Contrasenia: Facil123
+Contraseña: Facil123
 
 # Colaborador
 Usuario: Edu_rulos
-Contrasenia: Facil123
+Contraseña: Facil123
 
 # Registrado
 Usuario: Rulos
-Contrasenia: Facil123
+Contraseña: Facil123
+
+#Gracias
+Muchas gracias por todo lo enseñado, lo di todo
 
 # Estructura del proyecto:
 
