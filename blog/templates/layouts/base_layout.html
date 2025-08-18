@@ -7,18 +7,25 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>{% block title_layout %} {% endblock title_layout %}</title>
       <link 
-          rel="stylesheet" 
+          rel="icon" 
           href="{% static 'assets/favicon.ico' %}" 
           type="image/x-icon"
       >
       <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
       {% block extra_head_layout %} {% endblock extra_head_layout %}
 
-      <style>
-        @theme {
-          --color-primary: #1a202c;
-        }
-      </style>
+        <style>
+            .bg-animated {
+              background: linear-gradient(270deg, #18181B, #23272F, #1A1A2E, #00FF99, #FF00CC);
+              background-size: 1000% 1000%;
+              animation: gradientMove 20s ease infinite;
+            }
+            gradientMove {
+              0% {background-position:0% 50%}
+              50% {background-position:100% 50%}
+              100% {background-position:0% 50%}
+            }
+        </style>
   </head>
   <body class="bg-primary">
       {% block content_layout %} {% endblock content_layout %}

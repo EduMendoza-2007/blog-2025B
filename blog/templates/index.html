@@ -1,34 +1,144 @@
 {% extends 'layouts/general_layout.html' %}
+{% load static %}
 
+{% block title %}Nexus Gaming{% endblock title %}
 
-{% block title %}
-    INICIO
-{% endblock title %}
-
+{# CSS para el fondo animado y algunos toques #}
+{% block extra_head %}
+<style>
+  .bg-animated{
+    background: linear-gradient(270deg,#0b0e13,#141821,#0b0e13,#00ff99,#7c3aed);
+    background-size: 1200% 1200%;
+    animation: gradientMove 16s ease infinite;
+  }
+  @keyframes gradientMove{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+  .glass{
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(6px);
+  }
+</style>
+{% endblock extra_head %}
 
 {% block content %}
-<main class="w-full h-auto bg-[#FCF7EF] flex justify-center items-center border-black border-[1px]">
-    <div class="w-[74.5rem] items-center flex justify-center flex-col gap-4 my-6">
-        <h1 class="text-7xl font-semibold">Our news</h1>
-        <p>Que onda pipol</p>
-        <img src="../static/assets/Bandera australia.png" alt="Foto de portada">
-        <div class="w-full flex flex-col gap-2">
-            <p class="text-2xl font-semibold">Aca va la fake news</p>
-            <p>4 Min · August 19, 2025</p>
-        </div>
-    </div>
-</main>
+<div class="min-h-screen w-full bg-[#0b0e13] text-white">
+  <!-- HERO -->
+  <section class="relative bg-animated">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0b0e13]/40 to-[#0b0e13]"></div>
 
-<section class="w-full flex justify-center items-center gap-4">
-    <div class="w-[74.5rem] items-center flex justify-center flex-col gap-4 my-6 bg-green-300">
-        <article class="w-full border-[1px] border-gray-400 flex items-center gap-2">
-            <div class="w-35 h-30">
-                <img class="w-full h-full border-left" src="../static/assets/Bandera australia.png" alt="Foto Australia 2">
-            </div>
-            <p class="text-3xl font-semibold">akfdhijgakjdhsfgdksjvbxkjghjkakdfhalksfhdsfklnasdkjghasdfkjghadjkfh</p>
-        </article>
+<<<<<<< HEAD
+    <div class="relative max-w-7xl mx-auto px-4 py-16 sm:py-24 text-center">
+      <span class="inline-flex items-center gap-2 rounded-full border border-white/10 glass px-4 py-1 text-xs tracking-wider uppercase">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_18px_#34d399]"></span>
+        New Season
+      </span>
+      <h1 class="mt-6 text-4xl sm:text-6xl font-extrabold leading-tight">
+        Nexus <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Gaming Hub</span>
+      </h1>
+      <p class="mt-4 text-white/80 max-w-2xl mx-auto">
+        Lanzamientos, rankings y torneos. Todo en un solo lugar.
+      </p>
+      <div class="mt-8 flex justify-center gap-3">
+        <a href="#featured" class="rounded-xl px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-semibold transition">Juegos destacados</a>
+        <a href="#news" class="rounded-xl px-5 py-3 glass hover:bg-white/10 font-semibold transition">Noticias</a>
+      </div>
     </div>
-</section>
+  </section>
+
+  <!-- KPIs -->
+  <section class="border-y border-white/5 bg-white/[0.02]">
+    <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+      <div><p class="text-2xl font-bold">120+</p><p class="text-white/60 text-sm">Juegos</p></div>
+      <div><p class="text-2xl font-bold">35</p><p class="text-white/60 text-sm">Torneos</p></div>
+      <div><p class="text-2xl font-bold">5k</p><p class="text-white/60 text-sm">Jugadores</p></div>
+      <div><p class="text-2xl font-bold">24/7</p><p class="text-white/60 text-sm">Servers</p></div>
+    </div>
+  </section>
+
+  <!-- FEATURED GAMES -->
+  <section id="featured" class="max-w-7xl mx-auto px-4 py-12">
+    <div class="flex items-end justify-between gap-3 mb-6">
+      <h2 class="text-2xl sm:text-3xl font-bold">Juegos destacados</h2>
+      <a class="text-emerald-400 hover:underline" href="#">Ver todo</a>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {# Si tenés queryset 'games' con: title, cover (ImageField), genre, rating #}
+      {% if games %}
+        {% for g in games %}
+        <article class="group overflow-hidden rounded-2xl glass hover:border-emerald-400/40 transition">
+          <div class="h-48 w-full overflow-hidden">
+            <img src="{{ g.cover.url }}" alt="{{ g.title }}" class="h-full w-full object-cover group-hover:scale-[1.03] transition">
+          </div>
+          <div class="p-5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs tracking-wider uppercase text-white/60">{{ g.genre }}</span>
+              <span class="text-sm font-semibold text-emerald-400">★ {{ g.rating|default:"4.7" }}</span>
+            </div>
+            <h3 class="mt-2 text-lg font-bold">{{ g.title }}</h3>
+            <a href="{% url 'game_detail' g.pk %}" class="mt-4 inline-block rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-4 py-2 transition">
+              Jugar / Ver más
+            </a>
+          </div>
+        </article>
+        {% endfor %}
+      {% else %}
+        {# Placeholders si aún no tenés modelo #}
+        {% for i in "123" %}
+        <article class="overflow-hidden rounded-2xl glass">
+          <div class="h-48 w-full overflow-hidden">
+            <img src="{% static 'assets/Bandera australia.png' %}" alt="Cover" class="h-full w-full object-cover">
+          </div>
+          <div class="p-5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs tracking-wider uppercase text-white/60">Shooter</span>
+              <span class="text-sm font-semibold text-emerald-400">★ 4.8</span>
+            </div>
+            <h3 class="mt-2 text-lg font-bold">Project Nexus</h3>
+            <button class="mt-4 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-4 py-2 transition">
+              Jugar / Ver más
+            </button>
+          </div>
+        </article>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- NEWS -->
+  <section id="news" class="max-w-7xl mx-auto px-4 pb-16">
+    <div class="flex items-end justify-between gap-3 mb-6">
+      <h2 class="text-2xl sm:text-3xl font-bold">Últimas noticias</h2>
+      <a class="text-emerald-400 hover:underline" href="#">Ver todas</a>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {% if posts %}
+        {% for p in posts %}
+        <article class="rounded-2xl glass p-5 hover:border-emerald-400/40 transition">
+          <p class="text-xs text-white/60">{{ p.published_at|date:"M d, Y" }} · {{ p.read_time|default:"4" }} min</p>
+          <h3 class="mt-2 text-lg font-bold line-clamp-2">{{ p.title }}</h3>
+          <p class="mt-2 text-sm text-white/70 line-clamp-3">{{ p.summary }}</p>
+          <a href="{% url 'post_detail' p.slug %}" class="mt-4 inline-block text-emerald-400 hover:underline font-medium">Leer más →</a>
+        </article>
+        {% endfor %}
+      {% else %}
+        {% for i in "123" %}
+        <article class="rounded-2xl glass p-5">
+          <p class="text-xs text-white/60">Aug 14, 2025 · 4 min</p>
+          <h3 class="mt-2 text-lg font-bold">Parche 1.2: balance y nuevas skins</h3>
+          <p class="mt-2 text-sm text-white/70">Resumen del parche con cambios a armas, mapas y rendimiento.</p>
+          <span class="mt-4 inline-block text-emerald-400">Leer más →</span>
+        </article>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </section>
+</div>
+=======
+>>>>>>> feature/post
 {% endblock content %}
-    
-    

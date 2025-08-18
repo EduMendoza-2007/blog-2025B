@@ -1,0 +1,135 @@
+{% extends 'layouts/auth_layout.html' %}
+
+{% block title %}
+    Registro
+{% endblock title %}
+
+{% block content %}
+    <section>
+        <div class="min-h-screen flex items-center justify-center bg-blue-950 py-12 px-4 sm:px-6 lg:px-8 w-full">
+            <div class="max-w-md w-full space-y-8 flex justify-center items-center flex-col">
+                <div>
+                    <h2 class="mt-5 flex justify-center text-center text-4xl font-extrabold text-purple-600">
+                        REGISTRARSE
+                    </h2>
+                </div>
+                
+                <form class="mt-8 space-y-6" method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="space-y-4 mb-8 flex justify-center flex-col items-center">
+                        <!-- Campo Username -->
+                        <div class="flex flex-col items-center justify-center">
+                            <label for="Usuario" class=" font-bold text-white flex items-center justify-center mb-1 text-xl">
+                                Usuario
+                            </label>
+                            <div class="bg-blue-50 w-50 h-8 flex items-center rounded-lg">
+                                {{ form.username }}
+                                {% if form.username.errors %}
+                            </div>
+                            
+                                <div class="mt-1 text-sm text-red-600 w-50">
+                                    {{ form.username.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Alias -->
+                        <div>
+                            <label for="Alias" class="text-xl font-bold text-white flex items-center justify-center mt-3.5 mb-1">
+                                Alias
+                            </label>
+                            <div class="bg-blue-50 w-50 h-8 flex items-center rounded-lg">
+                                {{ form.alias }}
+                                {% if form.alias.errors %}
+                            </div>
+                                                        
+                            <div class="mt-1 text-sm text-red-600 w-50">
+                                    {{ form.alias.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Campo Email -->
+                        <div>
+                            <label for="{{ form.email.id_for_label }}" class=" text-xl font-bold text-white flex justify-center mt-3 mb-1">
+                                Email
+                            </label>
+                            <div class="bg-blue-50 w-50 h-8 flex items-center rounded-lg">
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                            </div>
+                            
+                                <div class="mt-1 text-sm text-red-600 w-50">
+                                    {{ form.email.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+
+                        
+                        <!-- Foto de Perfil -->
+                        <div class="space-y-2">
+                            <label for="Foto_perfil" 
+                                class="flex justify-center items-center text-xl font-bold text-white mt-3">
+                                Foto de perfil
+                            </label>
+                            <div class="flex items-center space-x-4 justify-center">
+                                <div class="flex-shrink-0">
+                                    <div class="w-30 h-30 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden" id="preview-container">
+                                        <i class="text-gray-400 flex w-20 flex-col" id="default-avatar">{{ form.avatar }}</i>
+                                        <img id="image-preview" class="w-full h-full object-cover hidden"/>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if form.avatar.errors %}
+                                <div class="flex items-center mt-1 text-sm text-red-600 w-20">
+                                    <i class="fas fa-exclamation-circle mr-1 w-20"></i>
+                                    {{ form.avatar.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Campo Password1 -->
+                        <div>
+                            <label for="Contraseña" class="text-xl font-bold text-white justify-center flex mb-1 mt-3">
+                                Contraseña
+                            </label>
+                            <div class="bg-blue-50 w-50 h-8 flex items-center rounded-lg">
+                                {{ form.password1 }}
+                                {% if form.password1.errors %}
+                            </div>
+                            
+                                <div class="mt-1 text-sm text-red-600 w-50">
+                                    {{ form.password1.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Campo Password2 -->
+                        <div>
+                            <label for="Contraseña" class="text-xl font-bold text-white flex justify-center mt-3 mb-1">
+                                Confirmar contraseña
+                            </label>
+                            <div class="bg-blue-50 w-50 h-8 flex items-center rounded-lg">
+                                {{ form.password2 }}
+                                {% if form.password2.errors %}
+                            </div>
+                            
+                                <div class="mt-1 text-sm text-red-600 w-50">
+                                    {{ form.password2.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-xl font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out mt-15">
+                            Registrarse
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
