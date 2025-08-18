@@ -1,7 +1,22 @@
 # Proyecto creado con Python y Django
 
-Integrantes:
+# Integrantes:
 Edu Mendoza
+
+
+# USUARIOS DE PRUEBA
+
+# Admin
+Usuario: Edu
+Contrasenia: Facil123
+
+# Colaborador
+Usuario: Edu_rulos
+Contrasenia: Facil123
+
+# Registrado
+Usuario: Rulos
+Contrasenia: Facil123
 
 # Estructura del proyecto:
 
