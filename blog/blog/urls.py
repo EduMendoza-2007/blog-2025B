@@ -19,12 +19,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from blog.views import IndexView
+from .views import AboutView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+        path('admin/', admin.site.urls),
 
     # Home
     path('', IndexView.as_view(), name='home'),
+    path("about_us/", AboutView.as_view(), name="about_us"),
 
     # Rutas de tu app de posts (si las tenés)
     path('', include('apps.post.urls')),       # SIN namespace aquí
