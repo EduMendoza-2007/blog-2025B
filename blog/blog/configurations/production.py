@@ -5,7 +5,7 @@ DEBUG = False
 
 
 #TODO:Configurar el dominio al hacer deploy a production
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'midominio-production.com']
+ALLOWED_HOSTS = ['NexusGaming.pythonanywhere.com']
 
 #TODO: Configurar db para production
 DATABASES = {
