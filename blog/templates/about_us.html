@@ -1,3 +1,6 @@
+{% extends "index.html" %}
+{% load static %}
+
 {% block title %}Sobre nosotros — Nexus Gaming{% endblock %}
 
 {% block content %}
@@ -16,11 +19,11 @@
         <span class="bg-gradient-to-r from-emerald-300 via-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">
           Estudiantes de Desarrollo Web
         </span>
-        <span class="block mt-2 text-white/90 drop-shadow">con enfoque gamer y tecnológico</span>
+        <span class="block mt-2 text-white/90 drop-shadow">donde nuestro proyecto utilizamos un enfoque gamer y tecnológico</span>
       </h1>
       <p class="mx-auto mt-4 max-w-3xl text-white/75">
         Somos un equipo de <strong class="text-white">Desarrollo Web</strong> que aprende creando.
-        Trabajamos con <strong class="text-white">Python</strong>, <strong class="text-white">Bases de datos relacionales</strong>, <strong class="text-white">SQL</strong> y <strong class="text-white">Django</strong>.
+        Trabajamos con <strong class="text-white">Python</strong>, <strong class="text-white">Bases de datos relacionales</strong>, <strong class="text-white">SQL y tambien trabajamos con MySQL</strong> y <strong class="text-white">Django</strong>.
         Buscamos código claro, escalable y mantenible con buenas prácticas (control de versiones, migraciones y testing).
       </p>
     </div>
@@ -29,8 +32,7 @@
     <div class="mx-auto mt-8 h-[2px] w-48 bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-80"></div>
 
     <!-- Tarjetas del stack -->
-    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {% comment %} Card reutilizable: wrapper con borde degradado + glass {% endcomment %}
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
       <div class="group rounded-2xl p-[1px] bg-gradient-to-br from-emerald-400/50 via-cyan-400/30 to-fuchsia-400/50 transition-transform duration-300 hover:scale-[1.02]">
         <div class="rounded-2xl h-full bg-white/5 backdrop-blur-xl p-5 border border-white/10">
           <div class="flex items-center gap-3">
@@ -54,7 +56,7 @@
       <div class="group rounded-2xl p-[1px] bg-gradient-to-br from-emerald-400/50 via-cyan-400/30 to-fuchsia-400/50 transition-transform duration-300 hover:scale-[1.02]">
         <div class="rounded-2xl h-full bg-white/5 backdrop-blur-xl p-5 border border-white/10">
           <div class="flex items-center gap-3">
-            <svg class="size-8 text-fuchsia-300" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c4.97 0 9 1.79 9 4s-4.03 4-9 4-9-1.79-9-4 4.03-4 9-4Zm9 7v3c0 2.21-4.03 4-9 4s-9-1.79-9-4V9c1.88 1.66 5.48 2.5 9 2.5S19.12 10.66 21 9Zm0 6v3c0 2.21-4.03 4-9 4s-9-1.79-9-4v-3c1.88 1.66 5.48 2.5 9 2.5s7.12-.84 9-2.5Z"/></svg>
+            <svg class="size-8 text-fuchsia-300" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c4.97 0 9 1.79 9 4s-4.03 4-9 4-9-1.79-9-4 4.03-4 9-4Zm9 7v3c0 2.21-4.03 4-9 4s-9-1.79-9-4V9c1.88 1.66 5.48 2.5 9 2.5s7.12-.84 9-2.5Z"/></svg>
             <h3 class="text-lg font-semibold">BD Relacionales</h3>
           </div>
           <p class="mt-3 text-sm text-white/75">Esquemas, claves y migraciones (SQLite/PostgreSQL).</p>
@@ -68,6 +70,18 @@
             <h3 class="text-lg font-semibold">Django</h3>
           </div>
           <p class="mt-3 text-sm text-white/75">Vistas, templates, ORM, auth y admin listos para producción.</p>
+        </div>
+      </div>
+
+      <div class="group rounded-2xl p-[1px] bg-gradient-to-br from-emerald-400/50 via-cyan-400/30 to-fuchsia-400/50 transition-transform duration-300 hover:scale-[1.02]">
+        <div class="rounded-2xl h-full bg-white/5 backdrop-blur-xl p-5 border border-white/10">
+          <div class="flex items-center gap-3">
+            <svg class="size-8 text-sky-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 3c4.97 0 9 1.79 9 4v10c0 2.21-4.03 4-9 4s-9-1.79-9-4V7c0-2.21 4.03-4 9-4Zm0 2C8.134 5 5 6.343 5 8s3.134 3 7 3 7-1.343 7-3-3.134-3-7-3Zm7 6.5c0 .828-3.134 1.5-7 1.5s-7-.672-7-1.5M19 15c0 .828-3.134 1.5-7 1.5S5 15.828 5 15"/>
+            </svg>
+            <h3 class="text-lg font-semibold">MySQL</h3>
+          </div>
+          <p class="mt-3 text-sm text-white/75">Motor relacional ampliamente usado; diseño normalizado, índices y consultas eficientes para producción.</p>
         </div>
       </div>
     </div>
@@ -101,15 +115,14 @@
       </div>
     </div>
 
-    
+    <!-- Chips del stack (sin llamadas a métodos en el template) -->
     <div class="mt-10 flex flex-wrap items-center gap-3">
-  {% for tag in tags %}
-    <span class="px-3 py-1 rounded-full border border-emerald-400/30 text-emerald-300 bg-emerald-400/10 text-xs">
-      {{ tag }}
-    </span>
-  {% endfor %}
-</div>
-
+      {% for tag in tags %}
+        <span class="px-3 py-1 rounded-full border border-emerald-400/30 text-emerald-300 bg-emerald-400/10 text-xs">
+          {{ tag }}
+        </span>
+      {% endfor %}
+    </div>
   </div>
 </section>
 {% endblock %}
