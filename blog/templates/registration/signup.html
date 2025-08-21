@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Registrarte{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-md rounded-2xl bg-neo-card/60 neo-ring p-6">
+  <h1 class="mb-4 text-2xl font-semibold">Crear cuenta</h1>
+
+  {% if form.errors %}
+    <div class="mb-3 text-sm text-red-400">
+      Por favor, corregí los errores marcados.
+    </div>
+  {% endif %}
+
+  <form method="post" action="">
+    {% csrf_token %}
+    <div class="space-y-3">
+      <div>
+        <label class="text-sm text-slate-300">Usuario</label>
+        {{ form.username|add_class:"w-full rounded-lg bg-neo-bg/60 px-3 py-2 neo-ring outline-none" }}
+      </div>
+      <div>
+        <label class="text-sm text-slate-300">Email (opcional)</label>
+        {{ form.email|add_class:"w-full rounded-lg bg-neo-bg/60 px-3 py-2 neo-ring outline-none" }}
+      </div>
+      <div>
+        <label class="text-sm text-slate-300">Contraseña</label>
+        {{ form.password1|add_class:"w-full rounded-lg bg-neo-bg/60 px-3 py-2 neo-ring outline-none" }}
+      </div>
+      <div>
+        <label class="text-sm text-slate-300">Repetí la contraseña</label>
+        {{ form.password2|add_class:"w-full rounded-lg bg-neo-bg/60 px-3 py-2 neo-ring outline-none" }}
+      </div>
+
+      <button class="w-full rounded-lg bg-emerald-500 px-3 py-2 font-medium text-black hover:opacity-90">
+        Registrarme
+      </button>
+    </div>
+  </form>
+
+  <p class="mt-4 text-sm text-slate-400">
+    ¿Ya tenés cuenta?
+    <a class="text-neo-neon hover:underline" href="{% url 'login' %}">Iniciar sesión</a>
+  </p>
+</div>
+{% endblock %}
