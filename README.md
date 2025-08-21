@@ -2,6 +2,8 @@
 
 # Integrantes:
 Edu Mendoza
+Cristian Camacho
+Fernandez Joana
 
 
 # USUARIOS DE PRUEBA
