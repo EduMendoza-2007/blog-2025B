@@ -117,3 +117,27 @@ LOGOUT_REDIRECT_URL = "home"
 # --- Email (dev) ---
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEFAULT_FROM_EMAIL = "no-reply@nexus.local"
+
+
+ENGINE = os.getenv("DB_ENGINE", "django.db.backends.sqlite3")
+
+if ENGINE == "django.db.backends.sqlite3":
+    DATABASES = {
+        "default": {
+            "ENGINE": ENGINE,
+            # Si no hay DB_NAME en el entorno, usa db.sqlite3 en tu proyecto
+            "NAME": os.getenv("DB_NAME") or (BASE_DIR / "db.sqlite3"),
+        }
+    }
+else:
+    # Ejemplo Postgres (ajustá tus variables de entorno)
+    DATABASES = {
+        "default": {
+            "ENGINE": ENGINE,  # "django.db.backends.postgresql"
+            "NAME": os.getenv("DB_NAME", "postgres"),
+            "USER": os.getenv("DB_USER", "postgres"),
+            "PASSWORD": os.getenv("DB_PASSWORD", ""),
+            "HOST": os.getenv("DB_HOST", "127.0.0.1"),
+            "PORT": os.getenv("DB_PORT", "5432"),
+        }
+    }
