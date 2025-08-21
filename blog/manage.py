@@ -1,3 +1,12 @@
+from pathlib import Path
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().parent / ".env")  # opcional: ruta explícita
+except Exception:
+    pass 
+
+
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os

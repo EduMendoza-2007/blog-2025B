@@ -1,0 +1,10 @@
+.entorno
+__pycache__
+db.sqlite3
+.vscode
+blog/media/**/avatar
+blog/media/**/cover
+node_modules
+staticfiles
+.env
+.env.example

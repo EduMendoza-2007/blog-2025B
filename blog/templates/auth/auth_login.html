@@ -1,0 +1,35 @@
+{% extends 'layouts/auth_layout.html' %}
+
+{% block title %}
+    Iniciar Sesión
+{% endblock title %}
+
+{% block content %}
+    <section class="flex justify-center items-center flex-col gap-4">
+        <div class="flex flex-col items-center justify-center gap-4 mb-8">
+            <h1 class="text-purple-400 font-bold text-3xl">Inicia secion</h1>
+            <p class="font-semibold text-[20px] text-center text-purple-600">
+                Ingresa tus datos para acceder
+            </p>
+        </div>
+
+        <form method="POST" class="flex flex-col gap-6">
+            {% csrf_token %}                 
+            <label for="username" class="text-white flex flex-col text-center">Usuario</label>
+            <div class="bg-blue-50 w-80 h-10 flex items-center rounded-lg">
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+            <label for="password" class="text-white flex flex-col text-center">Contraseña</label>
+            <div class="bg-blue-50 w-80 h-10 flex items-center rounded-lg">
+                {{ form.password }}
+                {{ form.password.errors }}
+            </div>
+
+            <button type="submit" class="w-full h-15 bg-purple-900 text-white rounded-lg mt-3 font-semibold text-2xl">Iniciar Sesión</button>
+        </form>
+        <a href="{% url 'user:auth_register' %}" class="text-white font-semibold">
+            Crear nuevo usuario
+        </a>
+    </section>
+{% endblock content %}
