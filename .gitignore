@@ -1,7 +1,0 @@
-.entorno
-__pycache__
-db.sqlite3
-.vscode
-media
-node_modules
-staticfiles
