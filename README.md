@@ -9,19 +9,19 @@ Fernandez Joana
 # USUARIOS DE PRUEBA
 
 # Admin
-Usuario: Edu
-Contraseña: Facil123
+Usuario: Gamer
+Contraseña: Dificil123
 
 # Colaborador
-Usuario: Edu_rulos
+Usuario: Pablo
 Contraseña: Facil123
 
 # Registrado
-Usuario: Rulos
+Usuario: Edu
 Contraseña: Facil123
 
 #Gracias
-Muchas gracias por todo lo enseñado, lo di todo
+Muchas gracias por todo lo enseñado, lo dimos todo
 
 # Estructura del proyecto:
 
