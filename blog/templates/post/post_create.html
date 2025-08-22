@@ -1,0 +1,33 @@
+<<<<<<< HEAD
+{% extends "post/post_form.html" %}
+{% block title %}Nuevo artículo - Nexus Gaming{% endblock %}
+{% block page_title %}Nuevo artículo{% endblock %}
+=======
+{% extends 'layouts/post_layout.html' %}
+
+
+{% block title %}
+    Crear Post
+{% endblock title %}
+
+
+{% block content %}
+    <h1>Crear nuevo post</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class='flex-col flex gap-4'>
+            <p class='flex-col flex gap-4'>Titulo: {{ form.title }}</p>
+            <p class='flex-col flex gap-4'>Contenido: {{ form.content }}</p>
+            <p class='flex-col flex gap-4'>Comentarios: {{ form.allow_coments }}</p>
+            <p>
+                <input type="file" name="images" multiple>
+            </p>
+        </div>
+        <button type="submit">
+            Crear post
+        </button>
+    </form>
+
+{% endblock content %}
+>>>>>>> feature/post

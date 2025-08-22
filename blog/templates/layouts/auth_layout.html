@@ -1,0 +1,20 @@
+{% extends 'layouts/base_layout.html' %}
+
+{% block title_layout %}    
+    {% block title %}
+        GAMING
+    {% endblock title %}
+        Blog 
+{% endblock title_layout %}
+    
+
+{% block extra_head_layout %}
+    {% block extra_head %} {% endblock extra_head %}
+{% endblock extra_head_layout %}
+    
+
+{% block content_layout %}
+    <main class="min-h-[calc(100dvh)] flex justify-center bg-blue-950 w-full">
+        {% block content %} e Colocar contenido {% endblock content %}
+    </main>
+{% endblock content_layout %}

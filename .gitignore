@@ -8,3 +8,5 @@ blog/media/**/cover
 node_modules
 staticfiles
 .env
+blog.db
+**.db
