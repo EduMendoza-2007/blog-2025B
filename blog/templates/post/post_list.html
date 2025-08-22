@@ -13,6 +13,13 @@
     <button type="submit" class="w-full sm:w-[280px] bg-blue-500 text-white p-2 rounded-lg">Buscar</button>
   </form>
 
+  {% if perms.post.add_post %}
+  <a href="{% url 'post:post_create' %}" 
+   class="inline-flex items-center rounded-lg px-4 py-2 bg-emerald-600 text-white hover:bg-emerald-500">
+   Nuevo post
+  </a>
+  {% endif %}
+
   <div class="grid grid-cols-1 gap-6">
     {% for post in object_list %}
       <div class="bg-gray-800 text-white rounded-2xl p-6">

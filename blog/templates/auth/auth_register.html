@@ -1,135 +1,212 @@
 {% extends 'layouts/auth_layout.html' %}
 
-{% block title %}
-    Registro
-{% endblock title %}
+{% block title %}Registro{% endblock title %}
 
 {% block content %}
-    <section>
-        <div class="min-h-screen flex items-center justify-center bg-blue-950 py-12 px-4 sm:px-6 lg:px-8 w-full">
-            <div class="max-w-md w-full space-y-8 flex justify-center items-center flex-col">
-                <div>
-                    <h2 class="mt-5 flex justify-center text-center text-4xl font-extrabold text-purple-600">
-                        REGISTRARSE
-                    </h2>
-                </div>
-                
-                <form class="mt-8 space-y-6" method="POST">
-                    {% csrf_token %}
-                    
-                    <div class="space-y-4 mb-8 flex justify-center flex-col items-center">
-                        <!-- Campo Username -->
-                        <div class="flex flex-col items-center justify-center">
-                            <label for="Usuario" class=" font-bold text-white flex items-center justify-center mb-1 text-xl">
-                                Usuario
-                            </label>
-                            <div class="bg-blue-50 w-50 h-8 flex items-center rounded-lg">
-                                {{ form.username }}
-                                {% if form.username.errors %}
-                            </div>
-                            
-                                <div class="mt-1 text-sm text-red-600 w-50">
-                                    {{ form.username.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
 
-                        <!-- Alias -->
-                        <div>
-                            <label for="Alias" class="text-xl font-bold text-white flex items-center justify-center mt-3.5 mb-1">
-                                Alias
-                            </label>
-                            <div class="bg-blue-50 w-50 h-8 flex items-center rounded-lg">
-                                {{ form.alias }}
-                                {% if form.alias.errors %}
-                            </div>
-                                                        
-                            <div class="mt-1 text-sm text-red-600 w-50">
-                                    {{ form.alias.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
+<!-- Animaciones y utilidades extra -->
+<style>
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .bg-neo {
+    background: linear-gradient(120deg, #0b1220, #0e1b3a, #1a0b3f, #0b3a3a, #0b1220);
+    background-size: 300% 300%;
+    animation: gradientShift 16s ease infinite;
+  }
+  .glass {
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(16, 24, 39, 0.55);
+    border: 1px solid rgba(100, 255, 218, 0.18);
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.45),
+      inset 0 0 0 1px rgba(100,255,218,0.05);
+  }
+  .neo-ring {
+    box-shadow:
+      0 0 0 1px rgba(100,255,218,0.15),
+      0 8px 25px rgba(16,185,129,0.15);
+  }
+  .neo-focus:focus {
+    outline: none;
+    box-shadow:
+      0 0 0 2px rgba(59,130,246,0.5),
+      0 0 0 6px rgba(99,102,241,0.25),
+      0 10px 20px rgba(0,0,0,0.35);
+    border-color: rgba(59,130,246,0.45);
+  }
+  .btn-neo {
+    box-shadow:
+      0 0 12px rgba(16, 185, 129, 0.6),
+      inset 0 0 12px rgba(16, 185, 129, 0.35);
+  }
+  .btn-neo:hover {
+    box-shadow:
+      0 0 20px rgba(16, 185, 129, 0.85),
+      inset 0 0 16px rgba(16, 185, 129, 0.55);
+    transform: translateY(-1px);
+  }
+  .title-glow {
+    text-shadow: 0 0 18px rgba(139,92,246,0.55), 0 0 34px rgba(99,102,241,0.35);
+  }
+  /* Estilizar los <ul class="errorlist"> de Django */
+  .errorlist {
+    margin-top: .25rem;
+    color: #f87171; /* red-400 */
+    font-size: .875rem; /* text-sm */
+    list-style: disc;
+    padding-left: 1rem;
+  }
+</style>
 
-                        <!-- Campo Email -->
-                        <div>
-                            <label for="{{ form.email.id_for_label }}" class=" text-xl font-bold text-white flex justify-center mt-3 mb-1">
-                                Email
-                            </label>
-                            <div class="bg-blue-50 w-50 h-8 flex items-center rounded-lg">
-                                {{ form.email }}
-                                {% if form.email.errors %}
-                            </div>
-                            
-                                <div class="mt-1 text-sm text-red-600 w-50">
-                                    {{ form.email.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
+<section class="min-h-[100svh] w-full relative overflow-hidden">
+  <!-- Fondo animado -->
+  <div class="absolute inset-0 bg-neo"></div>
 
+  <!-- Overlay con líneas y grid sutil -->
+  <div class="pointer-events-none absolute inset-0 opacity-30 mix-blend-screen">
+    <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(99,102,241,0.2)" stroke-width="1"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)"/>
+    </svg>
+  </div>
 
-                        
-                        <!-- Foto de Perfil -->
-                        <div class="space-y-2">
-                            <label for="Foto_perfil" 
-                                class="flex justify-center items-center text-xl font-bold text-white mt-3">
-                                Foto de perfil
-                            </label>
-                            <div class="flex items-center space-x-4 justify-center">
-                                <div class="flex-shrink-0">
-                                    <div class="w-30 h-30 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden" id="preview-container">
-                                        <i class="text-gray-400 flex w-20 flex-col" id="default-avatar">{{ form.avatar }}</i>
-                                        <img id="image-preview" class="w-full h-full object-cover hidden"/>
-                                    </div>
-                                </div>
-                            </div>
-                            {% if form.avatar.errors %}
-                                <div class="flex items-center mt-1 text-sm text-red-600 w-20">
-                                    <i class="fas fa-exclamation-circle mr-1 w-20"></i>
-                                    {{ form.avatar.errors.0 }}
-                                </div>
-                            {% endif %}
-                        </div>
+  <!-- Contenedor del form -->
+  <div class="relative z-10 mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8 flex items-center min-h-[100svh]">
+    <div class="w-full rounded-2xl glass neo-ring p-8 sm:p-10">
+      <div class="text-center mb-8">
+        <h2 class="text-4xl font-black tracking-wide text-purple-400 title-glow">
+          REGISTRARSE
+        </h2>
+        <p class="mt-2 text-sm text-white/70">
+          Crea tu cuenta para entrar al <span class="text-emerald-400">blog gamer</span>.
+        </p>
+      </div>
 
-                        <!-- Campo Password1 -->
-                        <div>
-                            <label for="Contraseña" class="text-xl font-bold text-white justify-center flex mb-1 mt-3">
-                                Contraseña
-                            </label>
-                            <div class="bg-blue-50 w-50 h-8 flex items-center rounded-lg">
-                                {{ form.password1 }}
-                                {% if form.password1.errors %}
-                            </div>
-                            
-                                <div class="mt-1 text-sm text-red-600 w-50">
-                                    {{ form.password1.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
+      <form method="POST" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
 
-                        <!-- Campo Password2 -->
-                        <div>
-                            <label for="Contraseña" class="text-xl font-bold text-white flex justify-center mt-3 mb-1">
-                                Confirmar contraseña
-                            </label>
-                            <div class="bg-blue-50 w-50 h-8 flex items-center rounded-lg">
-                                {{ form.password2 }}
-                                {% if form.password2.errors %}
-                            </div>
-                            
-                                <div class="mt-1 text-sm text-red-600 w-50">
-                                    {{ form.password2.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div>
-                        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-xl font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out mt-15">
-                            Registrarse
-                        </button>
-                    </div>
-                </form>
-            </div>
+        <!-- Usuario -->
+        <div>
+          <label class="block text-sm font-semibold uppercase tracking-wide text-white/80 mb-2">Usuario</label>
+          <div class="rounded-xl bg-white/5 border border-white/10 focus-within:border-emerald-400/50 transition">
+            <!-- Si usas widget_tweaks, podés aplicar clases. Si no, se ve bien igual dentro del wrapper. -->
+            {{ form.username }}
+          </div>
+          {{ form.username.errors }}
         </div>
-    </section>
+
+        <!-- Alias -->
+        <div>
+          <label class="block text-sm font-semibold uppercase tracking-wide text-white/80 mb-2">Alias</label>
+          <div class="rounded-xl bg-white/5 border border-white/10 focus-within:border-emerald-400/50 transition">
+            {{ form.alias }}
+          </div>
+          {{ form.alias.errors }}
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="block text-sm font-semibold uppercase tracking-wide text-white/80 mb-2">Email</label>
+          <div class="rounded-xl bg-white/5 border border-white/10 focus-within:border-emerald-400/50 transition">
+            {{ form.email }}
+          </div>
+          {{ form.email.errors }}
+        </div>
+
+        <!-- Foto de Perfil -->
+        <div>
+          <label class="block text-sm font-semibold uppercase tracking-wide text-white/80 mb-3">Foto de perfil</label>
+          <div class="flex items-center gap-5">
+            <div class="h-24 w-24 rounded-full overflow-hidden neo-ring flex items-center justify-center bg-white/5">
+              <img id="image-preview" class="h-full w-full object-cover hidden" alt="Preview"/>
+              <div id="default-avatar" class="text-white/50 text-xs text-center px-2">
+                Sin imagen
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="rounded-xl bg-white/5 border border-white/10 p-3">
+                {{ form.avatar }}
+              </div>
+              {{ form.avatar.errors }}
+              <p class="text-xs text-white/50 mt-2">Formatos: JPG/PNG • Máx. 2–5MB (según tu validación).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm font-semibold uppercase tracking-wide text-white/80 mb-2">Contraseña</label>
+            <div class="rounded-xl bg-white/5 border border-white/10 focus-within:border-emerald-400/50 transition">
+              {{ form.password1 }}
+            </div>
+            {{ form.password1.errors }}
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold uppercase tracking-wide text-white/80 mb-2">Confirmar contraseña</label>
+            <div class="rounded-xl bg-white/5 border border-white/10 focus-within:border-emerald-400/50 transition">
+              {{ form.password2 }}
+            </div>
+            {{ form.password2.errors }}
+          </div>
+        </div>
+
+        <!-- Botón -->
+        <div class="pt-2">
+          <button
+            type="submit"
+            class="btn-neo w-full rounded-xl bg-emerald-500/90 hover:bg-emerald-400 text-slate-900 font-extrabold tracking-wide py-3 transition transform"
+          >
+            Crear cuenta
+          </button>
+        </div>
+      </form>
+
+      <!-- Tips -->
+      <div class="mt-6 text-xs text-white/50 text-center">
+        Al registrarte aceptás nuestros <a href="#" class="text-emerald-300 hover:underline">Términos</a> y <a href="#" class="text-emerald-300 hover:underline">Política</a>.
+      </div>
+    </div>
+  </div>
+
+  <!-- Partículas simples (opcional, decorativo) -->
+  <div class="pointer-events-none absolute inset-0">
+    <div class="absolute -top-10 -left-10 h-52 w-52 rounded-full blur-3xl opacity-30 bg-emerald-500"></div>
+    <div class="absolute bottom-10 right-10 h-60 w-60 rounded-full blur-3xl opacity-25 bg-indigo-500"></div>
+  </div>
+</section>
+
+<!-- Preview del avatar -->
+<script>
+  (function () {
+    const input = document.getElementById('{{ form.avatar.id_for_label }}') || document.querySelector('input[type="file"][name="{{ form.avatar.name }}"]');
+    const preview = document.getElementById('image-preview');
+    const placeholder = document.getElementById('default-avatar');
+
+    if (!input) return;
+    input.addEventListener('change', function (e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (ev) {
+        if (placeholder) placeholder.classList.add('hidden');
+        if (preview) {
+          preview.src = ev.target.result;
+          preview.classList.remove('hidden');
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  })();
+</script>
+
 {% endblock content %}
