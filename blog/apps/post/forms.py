@@ -1,5 +1,5 @@
 from django import forms
-from apps.post.models import Comment, Post, PostImage
+from apps.post.models import Category, Comment, Post, PostImage
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -7,11 +7,19 @@ class PostForm(forms.ModelForm):
         fields = ('title', 'content', 'allow_comments')
 
 class PostCreateForm(PostForm):
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        empty_label="Selecciona una categoría",
+        widget=forms.Select(attrs={'class': 'w-full p-2'})
+    )
     image = forms.ImageField(required=False)
 
     def save(self, commit=True):
         post = super().save(commit=False)
         image = self.cleaned_data['image']
+        category = self.cleaned_data['category']
+
+        post.category = category
 
         if  commit:
             post.save()
@@ -20,22 +28,46 @@ class PostCreateForm(PostForm):
 
         return post
 
+from django import forms
+from .models import Post, PostImage
+
+
 class PostUpdateForm(PostForm):
     image = forms.ImageField(required=False)
-
-    #def __init__(self, *args, **kwargs):
-    #    f"keep_image_{image.id}"
+    
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.get('instance')
+        super().__init__(*args, **kwargs)
+        
+        # Crear checkboxes para imágenes existentes
+        if self.instance and self.instance.pk:
+            for img in PostImage.objects.filter(post=self.instance):
+                self.fields[f"keep_image_{img.id}"] = forms.BooleanField(
+                    required=False,
+                    initial=True,
+                    label=f"Mantener imagen"
+                )
 
     def save(self, commit=True):
         post = super().save(commit=False)
-        image = self.cleaned_data['image']
-
-        if  commit:
+        
+        if commit:
             post.save()
-            if image:
-                PostImage.objects.create(post=post, image=image)
-            #if self.active_images:
-            #    tenes que borrar si no hay ninguna keep image id
+            
+            # Eliminar imágenes no marcadas
+            if post.pk:
+                for img in PostImage.objects.filter(post=post):
+                    keep = self.cleaned_data.get(f"keep_image_{img.id}", False)
+                    if not keep:
+                        img.delete()
+            
+            # Agregar nueva imagen
+            if self.cleaned_data.get('image'):
+                PostImage.objects.create(
+                    post=post, 
+                    image=self.cleaned_data['image']
+                )
+        
         return post
 
 class PostFilterForm(forms.Form):
