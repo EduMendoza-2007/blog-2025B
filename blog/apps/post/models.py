@@ -8,13 +8,13 @@ import os
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, default="General")  # ← default temporal o permanente
+    title = models.CharField(max_length=100, default="General")  # ← default temporal o permanente
     slug = models.SlugField(unique=True, blank=True, null=True)
 
 
     class Meta:
         verbose_name_plural = "Categorías"
-        ordering = ["name"]
+        ordering = ["title"]
 
     def __str__(self):
         return self.title

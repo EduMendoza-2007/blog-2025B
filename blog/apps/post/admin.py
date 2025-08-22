@@ -3,9 +3,9 @@ from apps.post.models import Post, PostImage, Category, Comment
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("name", "slug", "post_count")
-    search_fields = ("name", "slug")
-    prepopulated_fields = {"slug": ("name",)}
+    list_display = ("title", "slug", "post_count")
+    search_fields = ("title", "slug")
+    prepopulated_fields = {"slug": ("title",)}
 
     def post_count(self, obj):
         # Ajusta el related_name si en tu modelo Post usaste otro
