@@ -3,6 +3,9 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.db.models import Count, Q
 from django.db import transaction
 from django.conf import settings
+
+from apps.post.forms import PostFilterForm, PostCreateForm, CommentForm, PostForm, PostUpdateForm
+
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
@@ -143,6 +146,7 @@ class PostDetailView(DetailView):
 
 class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
+
     form_class = PostForm
     template_name = "post/post_update.html"
     permission_required = "post.change_post"
@@ -153,6 +157,28 @@ class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTest
         post = self.get_object()
         # Autor o alguien con permiso explícito (p.ej., Colaborador)
         return self.request.user == post.author or self.request.user.has_perm("post.change_post")
+
+    form_class = PostUpdateForm
+    template_name = 'post/post_update.html'
+    
+    def test_func(self):
+        post = self.get_object()
+        return (self.request.user == post.author and self.request.user.is_collaborator) or self.request.user.is_superuser or self.request.user.is_staff or self.request.user.is_admin
+
+    #def get_form(self, form_class=None):
+    #    form = super().get_form(form_class)
+    #    form.fields['image'].initial = self.object.images.filter(active=True).first()
+    #    return form
+
+    #def form_valid(self, form):
+    #    ifs
+    #    mantener imagenes avtivas
+    #    agregar nuevas imagenes
+    #    no agrega ni mantiene imagenes
+    #    guardar post post.save()
+
+    #   return super().form_valid()
+
 
     def get_success_url(self):
         return reverse_lazy("post:post_detail", kwargs={"slug": self.object.slug})
@@ -168,7 +194,11 @@ class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTest
 
     def test_func(self):
         post = self.get_object()
+
         return self.request.user == post.author or self.request.user.has_perm("post.delete_post")
+
+        return (self.request.user == post.author and self.request.user.is_collaborator) or self.request.user.is_superuser or self.request.user.is_staff or self.request.user.is_admin
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
