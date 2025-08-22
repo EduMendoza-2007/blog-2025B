@@ -126,7 +126,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     
     def test_func(self):
         post = self.get_object()
-        return self.request.user == post.author
+        return (self.request.user == post.author and self.request.user.is_collaborator) or self.request.user.is_superuser or self.request.user.is_staff or self.request.user.is_admin
 
     #def get_form(self, form_class=None):
     #    form = super().get_form(form_class)
@@ -154,7 +154,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         post = self.get_object()
-        return self.request.user == post.author
+        return (self.request.user == post.author and self.request.user.is_collaborator) or self.request.user.is_superuser or self.request.user.is_staff or self.request.user.is_admin
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
