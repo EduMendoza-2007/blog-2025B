@@ -1,0 +1,128 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}Sobre nosotros — Nexus Gaming{% endblock %}
+
+{% block content %}
+<section class="relative overflow-hidden bg-gradient-to-b from-slate-950 via-black to-slate-950 text-white">
+  <!-- Glow decorativo -->
+  <div class="pointer-events-none absolute -top-24 left-1/2 size-[36rem] -translate-x-1/2 rounded-full bg-emerald-500/25 blur-3xl"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 py-16">
+    <!-- Cabecera -->
+    <div class="text-center">
+      <span class="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-[11px] font-semibold tracking-wider uppercase text-emerald-300">
+        <svg class="size-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4 2.5 7-7-4.5L5 20l2.5-7L2 9h7l3-7z"/></svg>
+        Sobre nosotros
+      </span>
+      <h1 class="mt-5 text-3xl sm:text-5xl font-extrabold tracking-tight">
+        <span class="bg-gradient-to-r from-emerald-300 via-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">
+          Estudiantes de Desarrollo Web
+        </span>
+        <span class="block mt-2 text-white/90 drop-shadow">donde nuestro proyecto utilizamos un enfoque gamer y tecnológico</span>
+      </h1>
+      <p class="mx-auto mt-4 max-w-3xl text-white/75">
+        Somos un equipo de <strong class="text-white">Desarrollo Web</strong> que aprende creando.
+        Trabajamos con <strong class="text-white">Python</strong>, <strong class="text-white">Bases de datos relacionales</strong>, <strong class="text-white">SQL y tambien trabajamos con MySQL</strong> y <strong class="text-white">Django</strong>.
+        Buscamos código claro, escalable y mantenible con buenas prácticas (control de versiones, migraciones y testing).
+      </p>
+    </div>
+
+    <!-- Línea neon -->
+    <div class="mx-auto mt-8 h-[2px] w-48 bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-80"></div>
+
+    <!-- Tarjetas del stack -->
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div class="group rounded-2xl p-[1px] bg-gradient-to-br from-emerald-400/50 via-cyan-400/30 to-fuchsia-400/50 transition-transform duration-300 hover:scale-[1.02]">
+        <div class="rounded-2xl h-full bg-white/5 backdrop-blur-xl p-5 border border-white/10">
+          <div class="flex items-center gap-3">
+            <svg class="size-8 text-emerald-300" viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 2h5a3.5 3.5 0 0 1 3.5 3.5V8a2 2 0 0 1-2 2H9a3 3 0 0 0-3 3v1H6a2 2 0 1 1 0 4H4.5A3.5 3.5 0 0 1 1 14.5V11A3 3 0 0 1 4 8h6.5a2.5 2.5 0 0 0 0-5Z"/><path d="M14.5 22h-5A3.5 3.5 0 0 1 6 18.5V16a2 2 0 0 1 2-2h7.5a3 3 0 0 0 3-3V10h0a2 2 0 1 1 0-4H20a3.5 3.5 0 0 1 3.5 3.5V13a3 3 0 0 1-3 3H14.5a2.5 2.5 0 1 0 0 5Z"/></svg>
+            <h3 class="text-lg font-semibold">Python</h3>
+          </div>
+          <p class="mt-3 text-sm text-white/75">Lenguaje base para lógica, automatización y servicios.</p>
+        </div>
+      </div>
+
+      <div class="group rounded-2xl p-[1px] bg-gradient-to-br from-emerald-400/50 via-cyan-400/30 to-fuchsia-400/50 transition-transform duration-300 hover:scale-[1.02]">
+        <div class="rounded-2xl h-full bg-white/5 backdrop-blur-xl p-5 border border-white/10">
+          <div class="flex items-center gap-3">
+            <svg class="size-8 text-cyan-300" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c4.97 0 9 1.79 9 4v10c0 2.21-4.03 4-9 4s-9-1.79-9-4V7c0-2.21 4.03-4 9-4Zm0 2C8.134 5 5 6.343 5 8s3.134 3 7 3 7-1.343 7-3-3.134-3-7-3Zm7 6.5c0 .828-3.134 1.5-7 1.5s-7-.672-7-1.5M19 15c0 .828-3.134 1.5-7 1.5S5 15.828 5 15"/></svg>
+            <h3 class="text-lg font-semibold">SQL</h3>
+          </div>
+          <p class="mt-3 text-sm text-white/75">Consultas optimizadas, joins y modelado de datos real.</p>
+        </div>
+      </div>
+
+      <div class="group rounded-2xl p-[1px] bg-gradient-to-br from-emerald-400/50 via-cyan-400/30 to-fuchsia-400/50 transition-transform duration-300 hover:scale-[1.02]">
+        <div class="rounded-2xl h-full bg-white/5 backdrop-blur-xl p-5 border border-white/10">
+          <div class="flex items-center gap-3">
+            <svg class="size-8 text-fuchsia-300" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c4.97 0 9 1.79 9 4s-4.03 4-9 4-9-1.79-9-4 4.03-4 9-4Zm9 7v3c0 2.21-4.03 4-9 4s-9-1.79-9-4V9c1.88 1.66 5.48 2.5 9 2.5s7.12-.84 9-2.5Z"/></svg>
+            <h3 class="text-lg font-semibold">BD Relacionales</h3>
+          </div>
+          <p class="mt-3 text-sm text-white/75">Esquemas, claves y migraciones (SQLite/PostgreSQL).</p>
+        </div>
+      </div>
+
+      <div class="group rounded-2xl p-[1px] bg-gradient-to-br from-emerald-400/50 via-cyan-400/30 to-fuchsia-400/50 transition-transform duration-300 hover:scale-[1.02]">
+        <div class="rounded-2xl h-full bg-white/5 backdrop-blur-xl p-5 border border-white/10">
+          <div class="flex items-center gap-3">
+            <svg class="size-8 text-emerald-300" viewBox="0 0 24 24" fill="currentColor"><path d="M7 3h6a5 5 0 0 1 5 5v13h-4V8a1 1 0 0 0-1-1H7V3Zm0 8h4a3 3 0 0 1 3 3v7H7V11Z"/></svg>
+            <h3 class="text-lg font-semibold">Django</h3>
+          </div>
+          <p class="mt-3 text-sm text-white/75">Vistas, templates, ORM, auth y admin listos para producción.</p>
+        </div>
+      </div>
+
+      <div class="group rounded-2xl p-[1px] bg-gradient-to-br from-emerald-400/50 via-cyan-400/30 to-fuchsia-400/50 transition-transform duration-300 hover:scale-[1.02]">
+        <div class="rounded-2xl h-full bg-white/5 backdrop-blur-xl p-5 border border-white/10">
+          <div class="flex items-center gap-3">
+            <svg class="size-8 text-sky-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 3c4.97 0 9 1.79 9 4v10c0 2.21-4.03 4-9 4s-9-1.79-9-4V7c0-2.21 4.03-4 9-4Zm0 2C8.134 5 5 6.343 5 8s3.134 3 7 3 7-1.343 7-3-3.134-3-7-3Zm7 6.5c0 .828-3.134 1.5-7 1.5s-7-.672-7-1.5M19 15c0 .828-3.134 1.5-7 1.5S5 15.828 5 15"/>
+            </svg>
+            <h3 class="text-lg font-semibold">MySQL</h3>
+          </div>
+          <p class="mt-3 text-sm text-white/75">Motor relacional ampliamente usado; diseño normalizado, índices y consultas eficientes para producción.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cómo trabajamos / Objetivos -->
+    <div class="mt-12 grid gap-6 lg:grid-cols-2">
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+        <h4 class="text-xl font-semibold flex items-center gap-2">
+          <span class="inline-block size-2 rounded-full bg-emerald-400 shadow-[0_0_20px_#34d399]"></span>
+          Cómo trabajamos
+        </h4>
+        <ul class="mt-4 space-y-2 text-white/80 text-sm">
+          <li class="flex items-start gap-2"><span class="mt-1 size-1.5 rounded-full bg-white/40"></span> Issues claros y roadmap iterativo.</li>
+          <li class="flex items-start gap-2"><span class="mt-1 size-1.5 rounded-full bg-white/40"></span> Gitflow: ramas por feature y PRs breves.</li>
+          <li class="flex items-start gap-2"><span class="mt-1 size-1.5 rounded-full bg-white/40"></span> Migraciones y ORM con buenas prácticas.</li>
+          <li class="flex items-start gap-2"><span class="mt-1 size-1.5 rounded-full bg-white/40"></span> Config por entorno (dev/prod) y estáticos optimizados.</li>
+        </ul>
+      </div>
+
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+        <h4 class="text-xl font-semibold flex items-center gap-2">
+          <span class="inline-block size-2 rounded-full bg-cyan-400 shadow-[0_0_20px_#22d3ee]"></span>
+          Objetivos
+        </h4>
+        <ul class="mt-4 space-y-2 text-white/80 text-sm">
+          <li class="flex items-start gap-2"><span class="mt-1 size-1.5 rounded-full bg-white/40"></span> Aprender haciendo funcionalidades reales.</li>
+          <li class="flex items-start gap-2"><span class="mt-1 size-1.5 rounded-full bg-white/40"></span> Calidad: pruebas, linting y documentación.</li>
+          <li class="flex items-start gap-2"><span class="mt-1 size-1.5 rounded-full bg-white/40"></span> Desplegar un MVP y seguir iterando.</li>
+          <li class="flex items-start gap-2"><span class="mt-1 size-1.5 rounded-full bg-white/40"></span> UX clara con estética gamer/tech.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Chips del stack (sin llamadas a métodos en el template) -->
+    <div class="mt-10 flex flex-wrap items-center gap-3">
+      {% for tag in tags %}
+        <span class="px-3 py-1 rounded-full border border-emerald-400/30 text-emerald-300 bg-emerald-400/10 text-xs">
+          {{ tag }}
+        </span>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
