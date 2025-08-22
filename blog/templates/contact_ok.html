@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% block title %}¡Gracias! — Nexus Gaming{% endblock %}
+
+{% block content %}
+<section class="bg-gradient-to-b from-slate-950 via-black to-slate-950 text-white">
+  <div class="max-w-xl mx-auto px-4 py-16 text-center">
+    <h1 class="text-3xl font-extrabold">¡Mensaje enviado! 🎉</h1>
+    <p class="mt-3 text-white/75">Gracias por contactarte. Te responderemos a la brevedad.</p>
+    <a href="{% url 'home' %}" class="inline-block mt-6 rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-black hover:opacity-90">
+      Volver al inicio
+    </a>
+  </div>
+</section>
+{% endblock %}
