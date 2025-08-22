@@ -1,5 +1,6 @@
 .entorno
 __pycache__/
+**/__pycache__/
 db.sqlite3
 .vscode
 blog/media/**/avatar
