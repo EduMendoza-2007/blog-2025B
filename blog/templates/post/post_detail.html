@@ -1,7 +1,6 @@
 {% extends "layouts/post_layout.html" %}
 {% block title %}{{ post.title }} - Nexus Gaming{% endblock %}
 
-<<<<<<< HEAD
 {% block post_main %}
 <article class="bg-gray-800/60 rounded-2xl p-6">
   <h1 class="text-3xl font-bold">{{ post.title }}</h1>
@@ -22,14 +21,11 @@
     </div>
   {% endif %}
 </article>
-=======
 {% block title %} Post {% endblock title %}
->>>>>>> feature/post
 
 <section class="mt-6 space-y-4">
   <h2 class="text-xl font-semibold">Comentarios</h2>
 
-<<<<<<< HEAD
   {% if user.is_authenticated %}
     <form method="post" action="{% url 'comment_create' post.slug %}" class="bg-gray-800/60 rounded-xl p-4 space-y-3">
       {% csrf_token %}
@@ -58,7 +54,6 @@
   </div>
 </section>
 {% endblock %}
-=======
 {% block content %}
 
 {% if active_images %}
@@ -145,4 +140,3 @@
 {% endblock content %}
     
     
->>>>>>> feature/post

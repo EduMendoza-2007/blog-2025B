@@ -1,59 +1,139 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from django.utils.text import slugify
 from apps.post.models import Comment, Post, PostImage
 
-class PostForm(forms.ModelForm):
+
+TAILWIND_INPUT = "w-full rounded-lg border border-white/10 bg-white/5 backdrop-blur p-2 text-sm text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-emerald-400/60"
+TAILWIND_SELECT = "w-full rounded-lg border border-white/10 bg-white/5 backdrop-blur p-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/60"
+TAILWIND_TEXTAREA = "w-full rounded-lg border border-white/10 bg-white/5 backdrop-blur p-3 text-sm text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-emerald-400/60"
+
+ALLOWED_IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp"}
+MAX_IMAGE_MB = 5  
+
+def _validate_image(f):
+    if not f:
+        return
+    
+    size_mb = f.size / (1024 * 1024)
+    if size_mb > MAX_IMAGE_MB:
+        raise ValidationError(f"La imagen supera {MAX_IMAGE_MB} MB (tiene {size_mb:.1f} MB).")
+    
+    name = f.name.lower()
+    if "." not in name or name[name.rfind("."):] not in ALLOWED_IMAGE_EXTS:
+        raise ValidationError("Formato no permitido. Usa JPG, PNG o WEBP.")
+
+
+class TailwindModelForm(forms.ModelForm):
+    """Aplica clases Tailwind por defecto en inputs/selects/textarea."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            w = field.widget
+            if isinstance(w, forms.Textarea):
+                w.attrs.setdefault("class", TAILWIND_TEXTAREA)
+            elif isinstance(w, (forms.Select, forms.SelectMultiple)):
+                w.attrs.setdefault("class", TAILWIND_SELECT)
+            else:
+                w.attrs.setdefault("class", TAILWIND_INPUT)
+
+
+class PostForm(TailwindModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'content', 'allow_comments')
+        fields = ("title", "content", "allow_comments", "category")
+        widgets = {
+            "title": forms.TextInput(attrs={
+                "placeholder": "Título del post",
+                "maxlength": 200,
+            }),
+            "content": forms.Textarea(attrs={
+                "rows": 8,
+                "placeholder": "Escribe el contenido del post… (máx. 10.000 caracteres)",
+            }),
+        }
+
+    def clean_title(self):
+        title = (self.cleaned_data.get("title") or "").strip()
+        # Colapsa espacios dobles
+        title = " ".join(title.split())
+        if not title:
+            raise ValidationError("El título no puede estar vacío.")
+        return title
+
+    def clean_content(self):
+        content = (self.cleaned_data.get("content") or "").strip()
+        if not content:
+            raise ValidationError("El contenido no puede estar vacío.")
+        return content
 
 class PostCreateForm(PostForm):
-    image = forms.ImageField(required=False)
+    image = forms.ImageField(required=False, help_text="Opcional: imagen de portada (JPG, PNG o WEBP, máx. 5MB)")
+
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        _validate_image(image)
+        return image
 
     def save(self, commit=True):
         post = super().save(commit=False)
-        image = self.cleaned_data['image']
-
-        if  commit:
+     
+        if commit:
             post.save()
+            image = self.cleaned_data.get("image")
             if image:
                 PostImage.objects.create(post=post, image=image)
-
         return post
 
 class PostUpdateForm(PostForm):
+    """
+    Si querés permitir reemplazar/añadir imagen en update,
+    podés agregar un ImageField opcional similar a PostCreateForm
+    y manejar en la view cómo sustituir o añadir.
+    """
     pass
+
+
 
 class PostFilterForm(forms.Form):
     search_query = forms.CharField(
-    required=False, 
-    widget=forms.TextInput(
-        attrs={'placeholder': 'Buscar...', 'class': 'w-full p-2 bg-red-200'}
-        )
+        required=False,
+        widget=forms.TextInput(attrs={
+            "placeholder": "Buscar por título o contenido…",
+            "class": TAILWIND_INPUT
+        })
+    )
+    ORDER_CHOICES = (
+        ("-created_at", "Más recientes"),
+        ("created_at", "Más antiguos"),
+        ("-comments_count", "Más comentados"),
+        # Si luego anotás rating o views, añadilos acá
+        # ("-rating", "Mejor puntuación"),
     )
     order_by = forms.ChoiceField(
         required=False,
-        choices=(
-            ('-created_at', 'Mas recientes'),
-            ('created_at', 'Mas antiguos'),
-            ('-comments_count', 'Mas comentados'),
-        ),
-        widget=forms.Select(
-            attrs={'class': 'w-full p-2'}
-        )
+        choices=ORDER_CHOICES,
+        widget=forms.Select(attrs={"class": TAILWIND_SELECT})
     )
 
-
-class CommentForm(forms.ModelForm):
+class CommentForm(TailwindModelForm):
     class Meta:
         model = Comment
-        fields = ['content']
-        labels = {
-            'content': 'Comentario'
+        fields = ["content"]
+        labels = {"content": "Comentario"}
+        widgets = {
+            "content": forms.Textarea(attrs={
+                "rows": 3,
+                "placeholder": "Escribe tu comentario…",
+                "class": TAILWIND_TEXTAREA
+            })
         }
-        widget = {
-            'content': forms.Textarea(
-                attrs={
-                    'rows': 3, 'placeholder': 'Escribe tu comentario...', 'class': 'p-2'
-                }
-            )
-        }
+
+    def clean_content(self):
+        content = (self.cleaned_data.get("content") or "").strip()
+        
+        if len(content) < 2:
+            raise ValidationError("El comentario es demasiado corto.")
+        if len(content) > 400:
+            raise ValidationError("El comentario excede 400 caracteres.")
+        return " ".join(content.split())

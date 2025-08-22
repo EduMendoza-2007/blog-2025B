@@ -12,6 +12,7 @@ class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     alias = models.CharField(max_length=30, blank=True)
     avatar = models.ImageField(upload_to=get_avatar_filename, default='user/avatar/default/Ninguno.png')
+    pass 
 
     def __str__(self):
         return self.username
