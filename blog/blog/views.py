@@ -11,3 +11,6 @@ class RegisterView(CreateView):
     form_class = UserCreationForm
     template_name = "auth/auth_register.html"
     success_url = reverse_lazy("home")  # ajusta si tu home se llama distinto
+
+class AboutView(TemplateView):
+    template_name = 'about_us.html'
