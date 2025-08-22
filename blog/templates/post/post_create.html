@@ -1,33 +1,35 @@
-<<<<<<< HEAD
 {% extends "post/post_form.html" %}
 {% block title %}Nuevo artículo - Nexus Gaming{% endblock %}
 {% block page_title %}Nuevo artículo{% endblock %}
-=======
-{% extends 'layouts/post_layout.html' %}
-
-
-{% block title %}
-    Crear Post
-{% endblock title %}
 
 
 {% block content %}
-    <h1>Crear nuevo post</h1>
+<section class="relative overflow-hidden bg-gradient-to-b from-slate-950 via-black to-slate-950 text-white">
+  <!-- Glow decorativo -->
+  <div class="pointer-events-none absolute -top-24 left-1/2 size-[36rem] -translate-x-1/2 rounded-full bg-emerald-500/25 blur-3xl"></div>
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class='flex-col flex gap-4'>
-            <p class='flex-col flex gap-4'>Titulo: {{ form.title }}</p>
-            <p class='flex-col flex gap-4'>Contenido: {{ form.content }}</p>
-            <p class='flex-col flex gap-4'>Comentarios: {{ form.allow_coments }}</p>
-            <p>
-                <input type="file" name="images" multiple>
-            </p>
-        </div>
-        <button type="submit">
-            Crear post
-        </button>
-    </form>
+  <div class="relative max-w-3xl mx-auto px-4 py-16">
+    <div class="text-center">
 
+    <div class="container mt-4 flex flex-col justify-center items-center gap-4 text-3xl">
+        <h1 class="text-3xl font-bold">Crear nuevo post</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class='flex-col flex gap-4 justify-center items-center'>
+                <p class='flex-col flex gap-4'>Titulo:</p>
+                <div class="bg-green-950 h-8 w-85 flex rounded-3xl">{{ form.title }}</div>
+                <p class='flex-col flex gap-4'>Contenido:</p>
+                <div class="h-80 w-80 bg-green-950 flex rounded-3xl">{{ form.content }}</div>
+                <p class='flex-col flex gap-4'>Comentarios:</p>
+                <div class="bg-green-950 h-8 w-85 flex rounded-3xl">{{ form.allow_coments }}</div>
+                <p class="bg-green-950 rounded-2xl mt-5">
+                    <input type="file" name="images" multiple>
+                </p>
+            </div>
+            <button type="submit" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded mt-5">
+                <a href="{% url 'home' %}">Crear post</a>
+            </button>
+        </form>
+    </div>
 {% endblock content %}
->>>>>>> feature/post
