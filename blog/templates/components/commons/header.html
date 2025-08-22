@@ -9,7 +9,7 @@
       <nav class="hidden sm:flex items-center gap-6 text-sm">
         <a href="{% url 'home' %}" class="text-white/80 hover:text-white">Inicio</a>
         <a href="#featured" class="text-white/80 hover:text-white">Juegos</a>
-        <a href="#acerca.de" class="text-white/80 hover:text-white">Acerca de</a>
+        <a href="{% url 'about_us' %}" class="text-white/80 hover:text-white">Acerca de</a>
       </nav>
       <div class="flex gap-3 justify-end">
       <a href="{% url 'user:auth_login' %}" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold transition">
