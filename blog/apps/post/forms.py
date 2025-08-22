@@ -21,7 +21,22 @@ class PostCreateForm(PostForm):
         return post
 
 class PostUpdateForm(PostForm):
-    pass
+    image = forms.ImageField(required=False)
+
+    #def __init__(self, *args, **kwargs):
+    #    f"keep_image_{image.id}"
+
+    def save(self, commit=True):
+        post = super().save(commit=False)
+        image = self.cleaned_data['image']
+
+        if  commit:
+            post.save()
+            if image:
+                PostImage.objects.create(post=post, image=image)
+            #if self.active_images:
+            #    tenes que borrar si no hay ninguna keep image id
+        return post
 
 class PostFilterForm(forms.Form):
     search_query = forms.CharField(
