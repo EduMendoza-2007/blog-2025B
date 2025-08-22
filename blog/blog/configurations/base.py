@@ -22,9 +22,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'apps.user',
+
     'apps.post',
+    'apps.accounts',
 ]
 
 MIDDLEWARE = [
@@ -108,3 +109,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DEFAULT_POST_IMAGE = 'post/default/post_default.png'
+
+# --- Login / Logout ---
+LOGIN_URL = "login"              # o "user:login" si usás namespace
+LOGIN_REDIRECT_URL = "home"      # dejalo a tu vista inicial
+LOGOUT_REDIRECT_URL = "home"
+
+# --- Email (dev) ---
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "no-reply@nexus.local"
