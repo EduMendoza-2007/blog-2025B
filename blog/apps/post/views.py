@@ -61,18 +61,14 @@ class PostCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        post = form.save()
-
+        response = super().form_valid(form)
         images = self.request.FILES.getlist('images')
-
         if images:
             for image in images:
-                PostImage.objects.create(post=post, image=image)
+                PostImage.objects.create(post=self.object, image=image)
         else:
-            PostImage.objects.create(
-                post=post, image=settings.DEFAULT_POST_IMAGE)
-
-        return super().form_valid(form)
+            PostImage.objects.create(post=self.object, image=settings.DEFAULT_POST_IMAGE)
+        return response
 
     def get_success_url(self):
         return reverse('post:post_detail', kwargs={'slug': self.object.slug})

@@ -10,21 +10,17 @@ class PostCreateForm(PostForm):
     category = forms.ModelChoiceField(
         queryset=Category.objects.all(),
         empty_label="Selecciona una categoría",
-        widget=forms.Select(attrs={'class': 'w-full p-2'})
+        widget=forms.Select(attrs={'class': 'w-full p-2 text-green-500'})
     )
-    image = forms.ImageField(required=False)
+    images = forms.ImageField(required=False)
 
     def save(self, commit=True):
         post = super().save(commit=False)
-        image = self.cleaned_data['image']
-        category = self.cleaned_data['category']
 
-        post.category = category
+        post.category = self.cleaned_data['category']
 
-        if  commit:
+        if commit:
             post.save()
-            if image:
-                PostImage.objects.create(post=post, image=image)
 
         return post
 

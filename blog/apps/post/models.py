@@ -58,9 +58,6 @@ class Post(models.Model):
 
         super().save(*args, **kwargs)
 
-        if not self.images.exists():
-            PostImage.objects.create(post=self, image='post/default/post_default.png')
-
     
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

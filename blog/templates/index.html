@@ -59,7 +59,7 @@
   <section id="featured" class="max-w-7xl mx-auto px-4 py-12">
     <div class="flex items-end justify-between gap-3 mb-6">
       <h2 class="text-2xl sm:text-3xl font-bold">Juegos destacados</h2>
-      <a class="text-emerald-400 hover:underline" href="#">Ver todo</a>
+      <a class="text-emerald-400 hover:underline" href="{% url 'post:post_list' %}">Ver todo</a>
     </div>
 
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -84,51 +84,32 @@
         {% endfor %}
       {% else %}
         {# Placeholders si aún no tenés modelo #}
-        {% for i in "123" %}
+        {% for post in posts %}
         <article class="overflow-hidden rounded-2xl glass">
           <div class="h-48 w-full overflow-hidden">
-            <img src="{% static 'assets/Portada.png' %}" alt="Cover" class="h-full w-full object-cover">
+            {% with post.images.all|first as post_image %}
+                        {% if post_image %}
+                            <img class="h-full w-full object-cover" 
+                                 src="{{ post_image.image.url }}" 
+                                 alt="{{ post.title }}">
+                        {% else %}
+                            <span class="text-white text-xl font-libertinus-bold text-center px-4">
+                                {{ post.title|truncatechars:40 }}
+                            </span>
+                        {% endif %}
+                    {% endwith %}
+            <img src="{{ post.images.first.url }}" alt="Cover" class="h-full w-full object-cover">
           </div>
           <div class="p-5">
             <div class="flex items-center justify-between">
-              <span class="text-xs tracking-wider uppercase text-white/60">Shooter</span>
-              <span class="text-sm font-semibold text-emerald-400">★ 4.8</span>
+              <span class="text-xs tracking-wider uppercase text-white/60">{{post.category}}</span>
+              <span class="text-sm font-semibold text-emerald-400">★ {{post.author}}</span>
             </div>
-            <h3 class="mt-2 text-lg font-bold">Project Nexus</h3>
-            <button class="mt-4 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-4 py-2 transition">
-              Jugar / Ver más
-            </button>
+            <h3 class="text-lg font-bold">{{post.title}}</h3>
+            <a href="{% url 'post:post_detail' post.slug %}" class="mt-6 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-4 py-2 transition">
+              Ver más
+            </a>
           </div>
-        </article>
-        {% endfor %}
-      {% endif %}
-    </div>
-  </section>
-
-  <!-- NEWS -->
-  <section id="news" class="max-w-7xl mx-auto px-4 pb-16">
-    <div class="flex items-end justify-between gap-3 mb-6">
-      <h2 class="text-2xl sm:text-3xl font-bold">Últimas noticias</h2>
-      <a class="text-emerald-400 hover:underline" href="#">Ver todas</a>
-    </div>
-
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {% if posts %}
-        {% for p in posts %}
-        <article class="rounded-2xl glass p-5 hover:border-emerald-400/40 transition">
-          <p class="text-xs text-white/60">{{ p.published_at|date:"M d, Y" }} · {{ p.read_time|default:"4" }} min</p>
-          <h3 class="mt-2 text-lg font-bold line-clamp-2">{{ p.title }}</h3>
-          <p class="mt-2 text-sm text-white/70 line-clamp-3">{{ p.summary }}</p>
-          <a href="{% url 'post_detail' p.slug %}" class="mt-4 inline-block text-emerald-400 hover:underline font-medium">Leer más →</a>
-        </article>
-        {% endfor %}
-      {% else %}
-        {% for i in "123" %}
-        <article class="rounded-2xl glass p-5">
-          <p class="text-xs text-white/60">Aug 14, 2025 · 4 min</p>
-          <h3 class="mt-2 text-lg font-bold">Parche 1.2: balance y nuevas skins</h3>
-          <p class="mt-2 text-sm text-white/70">Resumen del parche con cambios a armas, mapas y rendimiento.</p>
-          <span class="mt-4 inline-block text-emerald-400">Leer más →</span>
         </article>
         {% endfor %}
       {% endif %}
