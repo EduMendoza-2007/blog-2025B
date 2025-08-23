@@ -2,7 +2,7 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView,
 from django.db.models import Count
 from apps.post.models import Post, PostImage, Comment
 from django.conf import settings
-from apps.post.forms import PostFilterForm, PostCreateForm, CommentForm, PostForm
+from apps.post.forms import PostFilterForm, PostCreateForm, CommentForm, PostForm, PostUpdateForm
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -65,18 +65,14 @@ class PostCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        post = form.save()
-
+        response = super().form_valid(form)
         images = self.request.FILES.getlist('images')
-
         if images:
             for image in images:
-                PostImage.objects.create(post=post, image=image)
+                PostImage.objects.create(post=self.object, image=image)
         else:
-            PostImage.objects.create(
-                post=post, image=settings.DEFAULT_POST_IMAGE)
-
-        return super().form_valid(form)
+            PostImage.objects.create(post=self.object, image=settings.DEFAULT_POST_IMAGE)
+        return response
 
     def get_success_url(self):
         return reverse('post:post_detail', kwargs={'slug': self.object.slug})
@@ -125,13 +121,27 @@ class PostDetailView(DetailView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    form_class = PostForm
+    form_class = PostUpdateForm
     template_name = 'post/post_update.html'
     
     def test_func(self):
         post = self.get_object()
-        return self.request.user == post.author
-    
+        return (self.request.user == post.author and self.request.user.is_collaborator) or self.request.user.is_superuser or self.request.user.is_staff or self.request.user.is_admin
+
+    #def get_form(self, form_class=None):
+    #    form = super().get_form(form_class)
+    #    form.fields['image'].initial = self.object.images.filter(active=True).first()
+    #    return form
+
+    #def form_valid(self, form):
+    #    ifs
+    #    mantener imagenes avtivas
+    #    agregar nuevas imagenes
+    #    no agrega ni mantiene imagenes
+    #    guardar post post.save()
+
+    #   return super().form_valid()
+
     def get_success_url(self):
         return reverse_lazy('post:post_detail', kwargs={'slug': self.object.slug})
 
@@ -144,7 +154,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         post = self.get_object()
-        return self.request.user == post.author
+        return (self.request.user == post.author and self.request.user.is_collaborator) or self.request.user.is_superuser or self.request.user.is_staff or self.request.user.is_admin
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
