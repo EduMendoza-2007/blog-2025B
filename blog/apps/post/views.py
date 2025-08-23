@@ -7,6 +7,10 @@ from django.urls import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic import UpdateView, DeleteView
 
 class PostListView(ListView):
     model = Post
