@@ -183,7 +183,7 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'post_detail'
     
     def get_success_url(self):
-        return reverse_lazy('post_detail', kwargs={'slug': self.object.slug})
+        return reverse_lazy('post:post_detail', kwargs={'slug': self.object.post.slug})
     
     def test_func(self):
         comment = self.get_object()
@@ -196,19 +196,19 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Editar Comentario'
+        context['post'] = self.object.post
         return context
 
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Comment
-    form_class = CommentForm
-    template_name = 'post_detail'
-    success_url = reverse_lazy('post:post_detail')
+    model = Post
+
+    def get_success_url(self):
+        return reverse_lazy('post:post_detail', kwargs={'slug': self.object.post.slug})
     
+    def get_object(self):
+        return get_object_or_404(Comment, id=self.kwargs['pk'])
+
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
-    
-    def delete(self, request, *args, **kwargs):
-        messages.success(self.request, 'Comentario eliminado exitosamente.')
-        return super().delete(request, *args, **kwargs)
