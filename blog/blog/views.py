@@ -1,8 +1,15 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, FormView
+from apps.post.models import Post
 
-class IndexView(TemplateView):
+class IndexView(ListView):
     template_name = 'index.html'
+    model = Post
+    context_object_name = 'posts'
+    
+    def get_queryset(self):
+        #obtener los ultimos tres recientes
+        return Post.objects.order_by('-created_at')[:3]
 
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
