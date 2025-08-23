@@ -3,6 +3,13 @@
 {% block title %}Post | BLOG IA{% endblock title %}
 
 {% block content %}
+<section class="relative overflow-hidden bg-gradient-to-b from-slate-950 via-black to-slate-950 text-white">
+  <!-- Glow decorativo -->
+  <div class="pointer-events-none absolute -top-24 left-1/2 size-[36rem] -translate-x-1/2 rounded-full bg-emerald-500/25 blur-3xl"></div>
+
+  <div class="relative max-w-3xl mx-auto px-4 py-16">
+    <div class="text-center">
+
   <form method="get" class="flex flex-wrap sm:flex-nowrap gap-4 mb-6">
     <div class="w-full">
       {{ filter_form.search_query }}
@@ -31,7 +38,7 @@
         <p>Comentarios: {{ post.amount_comments }}</p>
         <div class="flex gap-2 mt-8">
           <a 
-            class="bg-red-500 text-white p-2 rounded-lg" 
+            class="bg-cyan-700 text-white p-2 rounded-lg" 
             href="{% url 'post:post_detail' slug=post.slug %}"
           >Ver post</a>
           <a 
