@@ -7,11 +7,18 @@
 
 
 {% block content %}
+<section class="relative overflow-hidden bg-gradient-to-b from-slate-950 via-black to-slate-950 text-white">
+  <!-- Glow decorativo -->
+  <div class="pointer-events-none absolute -top-24 left-1/2 size-[36rem] -translate-x-1/2 rounded-full bg-emerald-500/25 blur-3xl"></div>
+
+  <div class="relative max-w-3xl mx-auto px-4 py-16">
+    <div class="text-center">
+
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card border-danger">
-                <div class="card-header bg-danger text-white">
+                <div class="card-header bg-danger text-white text-4xl font-bold">
                     <h4 class="mb-0">
                         <i class="fas fa-exclamation-triangle"></i>
                         Confirmar Eliminación
@@ -23,10 +30,10 @@
                     </div>
                     
                     <p>¿Estás seguro de que quieres eliminar el post:</p>
-                    <h5 class="text-danger">"{{ object.title }}"</h5>
+                    <h5 class="text-danger font-semibold text-xl">"{{ object.title }}"</h5>
                     
                     <div class="post-info mt-3 p-3 bg-light rounded">
-                        <small class="text-muted">
+                        <small class="text-muted text-xl">
                             <strong>Autor:</strong> {{ object.author }}<br>
                             <strong>Fecha:</strong> {{ object.date_created|date:"d/m/Y H:i" }}<br>
                             <strong>Categoría:</strong> {{ object.category|default:"Sin categoría" }}
@@ -37,10 +44,10 @@
                         {% csrf_token %}
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a href="{% url 'post:post_detail' post.slug %}" 
-                               class="btn btn-secondary me-md-2">
+                               class="btn btn-secondary  bg-green-800 w-30 rounded">
                                 <i class="fas fa-arrow-left"></i> Cancelar
                             </a>
-                            <button type="submit" class="btn btn-danger">
+                            <button type="submit" class="btn btn-danger bg-green-800 ml-4 w-20 rounded">
                                 <i class="fas fa-trash"></i> Sí, Eliminar
                             </button>
                         </div>
