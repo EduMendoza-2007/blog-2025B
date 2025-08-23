@@ -8,16 +8,27 @@
       </a>
       <nav class="hidden sm:flex items-center gap-6 text-sm">
         <a href="{% url 'home' %}" class="text-white/80 hover:text-white">Inicio</a>
-        <a href="#featured" class="text-white/80 hover:text-white">Juegos</a>
+        <a href="{% url 'post:post_list' %}" class="text-white/80 hover:text-white">Publicaciones</a>
         <a href="{% url 'about_us' %}" class="text-white/80 hover:text-white">Acerca de</a>
       </nav>
       <div class="flex gap-3 justify-end">
-      <a href="{% url 'user:auth_login' %}" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold transition">
-       Iniciar Sesión
-      </a>
-      <a href="{% url 'user:auth_register' %}" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold transition">
-    Registrarte
-      </a>
+      {% if user.is_authenticated %}
+      {% if user.is_collaborator or user.is_superuser or user.is_staff or user.is_admin %}
+      <a href="{% url 'post:post_create' %}">Publicar</a>
+      {% endif %}
+      <a href="{% url 'user:user_profile' %}">{{ user.username }}</a>
+      <form method="POST" action="{% url 'user:auth_logout' %}">
+        {% csrf_token %}
+        <button type="submit">Cerrar sesión</button>
+      </form>
+      {% else %}
+        <a href="{% url 'user:auth_login' %}" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold transition">
+        Iniciar Sesión
+        </a>
+        <a href="{% url 'user:auth_register' %}" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black text-sm font-semibold transition">
+      Registrarte
+        </a>
+      {% endif %}
 </div>
 
     </div>

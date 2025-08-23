@@ -1,0 +1,38 @@
+{# Crear comentario #}
+{% if user.is_authenticated %}
+  <form method="post" action="{% url 'add_comment' object.slug %}" class="mt-6 space-y-3">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="rounded-md bg-indigo-600 text-white px-4 py-2 hover:bg-indigo-500">
+      Comentar
+    </button>
+  </form>
+{% else %}
+  <p class="mt-4 text-sm">
+    Para comentar, <a class="text-indigo-500 underline" href="{% url 'login' %}?next={{ request.path }}">iniciá sesión</a>.
+  </p>
+{% endif %}
+
+
+<h3 class="mt-10 text-xl font-semibold">Comentarios</h3>
+<ul class="mt-4 divide-y divide-white/10">
+  {% for c in object.comments.all %}
+    <li class="py-4">
+      <p class="text-sm text-white/60">
+        {{ c.user }} · {{ c.created_at|date:"d/m/Y H:i" }}
+        {% if c.updated_at and c.updated_at != c.created_at %}<span class="ml-2 text-xs">(editado)</span>{% endif %}
+      </p>
+      <p class="mt-2">{{ c.content }}</p>
+
+      
+      {% if user.is_authenticated and (c.user_id == user.id or perms.post.moderate_comment or user.is_staff) %}
+        <div class="mt-2 flex gap-3 text-sm">
+          <a href="{% url 'comment_update' c.pk %}" class="underline hover:text-indigo-300">Editar</a>
+          <a href="{% url 'comment_delete' c.pk %}" class="underline text-red-400 hover:text-red-300">Eliminar</a>
+        </div>
+      {% endif %}
+    </li>
+  {% empty %}
+    <li class="py-4 text-white/60">Sé el primero en comentar.</li>
+  {% endfor %}
+</ul>

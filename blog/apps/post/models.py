@@ -16,6 +16,11 @@ class Category(models.Model):
         verbose_name_plural = "Categorías"
         ordering = ["title"]
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.title
 
@@ -66,6 +71,11 @@ class Comment(models.Model):
     content = models.TextField(max_length=400)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        permissions = [
+            ("moderate_comments", "Can moderate comments")
+        ]
 
     def __str__(self):
         return self.content

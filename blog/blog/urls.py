@@ -14,6 +14,8 @@ urlpatterns = [
     path('', include('apps.post.urls')),      
     path('', include('apps.user.urls')),      
     path("", include("apps.accounts.urls")),  
+    path("accounts/", include("django.contrib.auth.urls")),  # login/logout
+
 ]
 
 if settings.DEBUG:

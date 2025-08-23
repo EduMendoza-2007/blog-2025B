@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-2xl font-bold">Eliminar comentario</h1>
+<p class="mt-4">¿Seguro que querés eliminar este comentario?</p>
+<blockquote class="mt-3 rounded-lg bg-white/5 p-4">{{ object.content }}</blockquote>
+
+<form method="post" class="mt-6 flex items-center gap-3">
+  {% csrf_token %}
+  <button class="rounded-md bg-red-600 text-white px-4 py-2 hover:bg-red-500">Eliminar</button>
+  <a href="{{ object.article.get_absolute_url }}" class="px-4 py-2 underline">Cancelar</a>
+</form>
+{% endblock %}

@@ -2,10 +2,10 @@
   <ul class="flex gap-4">
     <li><a href="{% url 'home' %}">Inicio</a></li>
     {% if user.is_authenticated %}
-      {% if user.is_collaborator %}
+      {% if user.is_collaborator or user.is_superuser or user.is_staff or user.is_admin %}
         <li>
-          {% comment %} <a href="{% url 'post:post_create' %}">Inicio</a> {% endcomment %}
-          Publicar
+          <a href="{% url 'post:post_create' %}">Publicar</a>
+          
         </li>
       {% endif %}
 
@@ -17,7 +17,7 @@
         </form>
       </li>
     {% else %}
-      <li><a href="{% url 'user:auth_login' %}">Iniciar sesión</a></li>
+      <li><a href="{% url 'user:auth_login' %}">Iniciar fsdgsesión</a></li>
       <li><a href="{% url 'user:auth_register' %}">Registrarse</a></li>
     {% endif %}
   </ul>
