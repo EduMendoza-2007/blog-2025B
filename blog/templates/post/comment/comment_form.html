@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-2xl font-bold">Editar comentario</h1>
+<form method="post" class="mt-6 space-y-4 max-w-2xl">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <div class="flex gap-3">
+    <button class="rounded-md bg-emerald-600 text-white px-4 py-2 hover:bg-emerald-500">
+      Guardar cambios
+    </button>
+    <a href="{{ object.article.get_absolute_url }}" class="px-4 py-2 underline">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

@@ -43,26 +43,6 @@
     {% endfor %}
   </div>
 
-  <div class="mt-4">
-    {% if is_paginated %}
-      <div class="flex justify-center items-center gap-2">
-        {% if pagination.previous_page %}
-          <a href="{{ pagination.previous_page }}" class="w-16 text-xs text-center bg-blue-500 text-white p-1 rounded-md">Anterior</a>
-        {% else %}
-          <span class="w-16 text-xs text-center bg-gray-500 text-white p-1 rounded-md">Anterior</span>
-        {% endif %}
-
-        <span class="w-10 text-center text-lg font-semibold">{{ page_obj.number }}</span>
-
-        {% if pagination.next_page %}
-          <a href="{{ pagination.next_page }}" class="w-16 text-xs text-center bg-blue-500 text-white p-1 rounded-md">Siguiente</a>
-        {% else %}
-          <span class="w-16 text-xs text-center bg-gray-500 text-white p-1 rounded-md">Siguiente</span>
-        {% endif %}
-      </div>
-    {% endif %}
-  </div>
-
   {% include "components/commons/pagination.html" %}
   
 {% endblock content %}
