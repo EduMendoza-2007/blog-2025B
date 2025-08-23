@@ -70,6 +70,11 @@ class Comment(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        permissions = [
+            ("moderate_comments", "Can moderate comments")
+        ]
+
     def __str__(self):
         return self.content
     
