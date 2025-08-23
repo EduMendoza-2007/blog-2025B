@@ -129,7 +129,7 @@
   <h4>Agregar un comentario</h4>
   <form method="post" action="{% url 'post:comment_create' post.slug %}">
     {% csrf_token %}
-    <p class="flex flex-col mt-4 mb-8">{{ add_comment_form.content.label_tag }} {{ add_comment_form.content }}</p>
+    <p class="flex flex-col mt-4 mb-8 bg-green-800">{{ add_comment_form.content.label_tag }} {{ add_comment_form.content }}</p>
     <button type="submit" class="bg-blue-500 text-white p-2 rounded-lg">Agregar comentario</button>
   </form>
 {% else %}
