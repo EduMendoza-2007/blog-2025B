@@ -25,7 +25,7 @@ Muchas gracias por todo lo enseñado, lo dimos todo
 
 # Estructura del proyecto:
 
-'''
+```
 C:.
 └───blog
     ├───apps
@@ -190,4 +190,4 @@ C:.
         ├───layouts
         ├───post
         └───user
-'''
+```
